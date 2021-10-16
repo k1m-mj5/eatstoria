@@ -42,7 +42,7 @@
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-6">
                     <div class="text-center my-5">
-                        <h1 class="display-5 fw-bolder text-white mb-2">Delicious story at EATSTORIA</h1>
+                        <h1 class="display-5 fw-bolder text-white mb-2">Delicious story at <span class="display-4 lead" style="text-shadow: 2px 8px 6px rgba(0,0,0,0.2), 0px -3px 20px rgba(255,255,255,0.4);">EATSTORIA</span></h1>
                         <p class="lead text-dark-50 mb-4">Share and Enjoy Together!</p>
                         <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
 

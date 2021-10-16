@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +34,7 @@
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.php">LOGIN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login-user.php">LOGIN</a></li>
                     <li class="nav-item"><a class="nav-link" href="register-user.php">JOIN US</a></li>
                 </ul>
             </div>
@@ -39,10 +43,31 @@
     <!-- Header-->
     <header class="bg-warning py-5">
         <div class="container px-5">
+        <div class="row mt-5">
+            <div class="col-6 mx-auto">
+                <?php
+                if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                    //Input
+                    $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                    $message = $_SESSION["message"];
+
+                    //Delete session variables
+                    unset($_SESSION["success"]);
+                    unset($_SESSION["message"]);
+                ?>
+
+                    <div class="alert alert-<?php echo $class; ?>" role="alert">
+                        <?php echo $message; ?>
+                    </div>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-6">
                     <div class="text-center my-5">
-                        <h1 class="display-5 fw-bolder text-white mb-2">Delicious story at EATSTORIA</h1>
+                        <h1 class="display-5 fw-bolder text-white mb-2">Delicious story at <span class="display-4 lead" style="text-shadow: 2px 8px 6px rgba(0,0,0,0.2), 0px -3px 20px rgba(255,255,255,0.4);">EATSTORIA</span></h1>
                         <p class="lead text-dark-50 mb-4">Share and Enjoy Together!</p>
                         <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
 

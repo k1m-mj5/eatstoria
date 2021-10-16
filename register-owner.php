@@ -129,31 +129,11 @@ session_start();
 
 <body>
     <div class="container">
-        <div class="row mt-5">
-            <div class="col-4 mx-auto">
-                <?php
-                if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
-                    //Input
-                    $class = ($_SESSION["success"] == 1) ? "success" : "danger";
-                    $message = $_SESSION["message"];
-
-                    //Delete session variables
-                    unset($_SESSION["success"]);
-                    unset($_SESSION["message"]);
-                ?>
-
-                    <div class="alert alert-<?php echo $class; ?>" role="alert">
-                        <?php echo $message; ?>
-                    </div>
-                <?php
-                }
-                ?>
-            </div>
-        </div>
+        
         <div class="signup-form">
             <h2>Register</h2>
             <p class="hint-text">Create <span class="text-danger font-weight-bold">owner</span> account.</p>
-            <form action="action/register-owner.php" method="post">
+            <form action="action/register-owner.php" method="POST">
                 <div class="form-group">
                     <input type="email" class="form-control" name="email" placeholder="Email" required="required">
                 </div>

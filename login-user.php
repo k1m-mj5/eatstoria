@@ -1,3 +1,14 @@
+<?php
+
+session_start();
+if(isset($_SESSION["role"]) && $_SESSION["role"]=="A"){
+    header("Location: index.php");
+} elseif(isset($_SESSION["role"]) && $_SESSION["role"]=="U"){
+    header("Location: mypage-user.php");
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +16,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
-    <title>Login</title>
+    <title>User Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -125,23 +136,26 @@
 </header>
 <body>
     <div class="signup-form">
-        <form action="/examples/actions/confirmation.php" method="post">
+        <form action="action/login-user.php" method="POST">
             <h2>Login</h2>
             
             
             <div class="form-group">
-                <input type="username" class="form-control" name="username" placeholder="Username or Restaurant Username" required="required">
+                <input type="username" class="form-control" name="username" placeholder="Username" required="required">
             </div>
             <div class="form-group">
                 <input type="password" class="form-control" name="password" placeholder="Password" required="required">
             </div>
             
             <div class="form-group">
-                <button type="submit" class="btn btn-success btn-lg btn-block">Log in</button>
+                <input type="submit" value="LOGIN" name="submit" class="btn btn-success btn-block">
             </div>
         </form>
-        <div class="text-center">Forget your password?
-            <a href="#">Click here!</a>
+        <div class="text-center text-secondary font-weight-bold mt-5 mb-5">Forget your password?
+            <a href="#" class="text-decoration-none"> Click here!</a>
+        </div>
+        <div class="text-center text-danger font-weight-bold">Owner Login
+            <a href="login-owner.php" class="text-decoration-none"> Click here!</a>
         </div>
     </div>
 </body>

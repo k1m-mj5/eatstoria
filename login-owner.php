@@ -1,5 +1,12 @@
 <?php
+
 session_start();
+if (isset($_SESSION["role"]) && $_SESSION["role"] == "A") {
+    header("Location: index.php");
+} elseif (isset($_SESSION["role"]) && $_SESSION["role"] == "U") {
+    header("Location: mypage-user.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -9,7 +16,7 @@ session_start();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
-    <title>Register</title>
+    <title>Owner Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -129,40 +136,23 @@ session_start();
     </header>
 
 <body>
-    <div class="container">
-        
-        <div class="signup-form">
-                <h2>Register</h2>
-                <p class="hint-text">Create your <span class="text-success font-weight-bold">personal</span> account.</p>
-            <form action="action/register-user.php" method="POST">
-                <div class="form-group">
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-check-label">
-                        <input type="checkbox" required="required"> I accept the
-                        <a href="#">Terms of Use</a> &amp;
-                        <a href="#">Privacy Policy</a>
-                    </label>
-                </div>
-                <div class="form-group">
-                <input type="submit" value="Register Now" name="submit" class="btn btn-success btn-block">
-                </div>
+    <div class="signup-form">
+        <form action="action/login-owner.php" method="POST">
+            <h2>Login</h2>
+            <div class="form-group">
+                <input type="restusername" class="form-control" name="restusername" placeholder="Restaurant Username" required="required">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+            </div>
 
-                <div class="text-center text-danger font-weight-bold">Are you an owner?
-                    <a href="register-owner.php">Register Here</a>
-                </div>
-                <div class="mt-3 text-right">
-                    <span class="text-muted">Have an account?</span>
-                    <a href="index.php" class="text-decoration-none">Sign in</a>
-                </div>
-            </form>
+            <div class="form-group">
+                <input type="submit" value="OWNER LOGIN" name="submit" class="btn btn-success btn-block">
+            </div>
+        </form>
+        <div class="text-center text-secondary font-weight-bold mt-5 mb-5">Forget your password?
+            <a href="#" class="text-decoration-none"> Click here!</a>
         </div>
-    </div>
-</body>
+        <div class="text-center text-danger font-weight-bold">Aren't you an owner?
+            <a href="login-user.php" class="text-decoration-none"> Click here!</a>
+        </div>
