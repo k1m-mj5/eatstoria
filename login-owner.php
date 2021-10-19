@@ -156,3 +156,5 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] == "A") {
         <div class="text-center text-danger font-weight-bold">Aren't you an owner?
             <a href="login-user.php" class="text-decoration-none"> Click here!</a>
         </div>
+    </body>
+    </html>
