@@ -8,13 +8,16 @@ class User extends Database{
     private $username;
     private $rest_username;
     private $email;
+    
 
     public function __construct($account_id=NULL){
         $this->conn = $this->connect();
         if($account_id !=NULL){
-            $sql = "SELECT accounts.account_id, user_id, email, username, rest_username, password
+            $sql = "SELECT accounts.account_id, users.user_id, users.email, accounts.username, accounts.rest_username, accounts.password
                     FROM accounts INNER JOIN users ON accounts.account_id = users.account_id
                     WHERE accounts.account_id = $account_id";
+
+            //echo "$sql";
 
                     $result = $this->conn->query($sql);
 
@@ -24,6 +27,7 @@ class User extends Database{
                             $this->username = $user["username"];
                             $this->rest_username = $user["rest_username"];
                             $this->email = $user["email"];
+                            
                         }
                     }
         }
@@ -36,22 +40,25 @@ class User extends Database{
         if($this->conn->query($sql)){
             $account_id = $this->conn->insert_id;
 
-            $sql = "INSERT INTO users(username, email, account_id)
-                    VALUES('$username','$email','$account_id')";
+            $sql = "INSERT INTO users(email, account_id)
+                    VALUES('$email','$account_id')";
 
             if($this->conn->query($sql)){
                 $_SESSION["success"] = 1;
                 $_SESSION["message"] = "Registration successful.";
                 header("Location:../index.php");
+                exit;
             } else {
                 $_SESSION["success"] = 0;
                 $_SESSION["message"] = "Registration Failed. Kindly try agian.";
                 header("Location:../register-user.php");
+                exit;
             }
         }else {
                 $_SESSION["success"] = 0;
                 $_SESSION["message"] = "Registration Failed. Kindly try agian.";
                 header("Location:../register-user.php");
+                exit;
             }
         }
     
@@ -62,8 +69,8 @@ class User extends Database{
         if($this->conn->query($sql)){
             $account_id = $this->conn->insert_id;
 
-            $sql = "INSERT INTO users(rest_username, email, account_id)
-                    VALUES('$rest_username','$email',$account_id)";
+            $sql = "INSERT INTO users(email, account_id)
+                    VALUES('$email',$account_id)";
             if($this->conn->query($sql)){
                 $_SESSION["success"] = 1;
                 $_SESSION["message"] = "Registration successful.";
@@ -77,13 +84,13 @@ class User extends Database{
             $_SESSION["success"] = 0;
             $_SESSION["message"] = "Registration Failed. Kindly try agian.";
             header("Location:../register-owner.php");
+            exit;
         }
     }
     
     public function loginuser($username,$password){
-        $sql = "SELECT accounts.account_id, accounts.password, accounts.role, users.username, users.email, users.user_id
-                FROM accounts INNER JOIN users ON accounts.account_id = users.account_id
-                WHERE users.username='$username';";
+        $sql = "SELECT * FROM accounts 
+                WHERE username='$username';";
         
         $result = $this->conn->query($sql);
         
@@ -96,25 +103,30 @@ class User extends Database{
                 
                 if($user["role"]=="A"){
                     header("Location: ../index.php");
+                    exit;
                 } elseif($user["role"]=="U"){
                     header("Location: ../mypage-user.php");
-                }
+                    exit;
+                } 
             } else{
                 $_SESSION["success"] = 0;
                 $_SESSION["message"] = "Incorrect password.";
                 header("Location: ../login-user.php");
+                exit;
+                //echo "password";
             } 
         } else {
             $_SESSION["success"] = 0;
             $_SESSION["message"] = "Incorrect username.";
             header("Location: ../login-user.php");
+            exit;
+            //echo "username";
         }
     }
 
     public function loginowner($rest_username,$password){
-        $sql = "SELECT accounts.account_id, accounts.password, accounts.role, users.rest_username, users.email, users.user_id
-                FROM accounts INNER JOIN users ON accounts.account_id = users.account_id
-                WHERE users.rest_username='$rest_username';";
+        $sql = "SELECT * FROM accounts 
+                WHERE rest_username='$rest_username';";
         
         $result = $this->conn->query($sql);
         
@@ -127,24 +139,86 @@ class User extends Database{
                 
                 if($user["role"]=="R"){
                     header("Location: ../mypage-restaurant.php");
+                    exit;
                 } else{
-                    //header("Location: ../mypage-user.php");
-                    echo "error";
+                    header("Location: ../index.php");
+                    exit;
                 }
 
             } else{
                 $_SESSION["success"] = 0;
                 $_SESSION["message"] = "Incorrect password.";
-                //header("Location: ../login-owner.php");
-                echo "password";
+                header("Location: ../login-owner.php");
+                exit;
             } 
         } else {
             $_SESSION["success"] = 0;
             $_SESSION["message"] = "Incorrect username.";
-            //header("Location: ../login-owner.php");
-            echo "username";
+            header("Location: ../login-owner.php");
+            exit;
         }
     }
+
+    public function updateUser($account_id, $username, $email, $password, $confirmpassword){
+        $hashed_password = password_hash($password,PASSWORD_DEFAULT);
+        $sql = "UPDATE accounts SET username = '$username'
+                WHERE account_id=$account_id;";         
+        $sql .= "UPDATE users SET email = '$email'
+                WHERE account_id=$account_id;";
+
+        if($password !== NULL){
+            if($password == $confirmpassword){
+            $sql .= "UPDATE accounts SET password='$hashed_password' WHERE accounts.account_id=$account_id;";
+            } 
+            else {
+                $_SESSION["success"] = 0;
+                $_SESSION["message"] = "Check your password again.";
+                header("Location: ../edit-user.php");
+                exit;
+            } 
+        }        
+        
+        if($this->conn->multi_query($sql)){
+            $_SESSION["success"] = 1;
+            $_SESSION["message"] = "Successfully Updated";
+            header("Location: ../mypage-user.php");
+            exit;
+        } else {
+            $_SESSION["success"] = 0;
+            $_SESSION["message"] = "Update Failed. Please kinldy check again.";
+            header("Location: ../edit-user.php");
+            exit;
+        }
+    }
+
+    public function updateOwner($account_id, $rest_username, $email, $password, $confirmpassword){
+        $hashed_password = password_hash($password,PASSWORD_DEFAULT);
+        $sql = "UPDATE accounts SET rest_username='$rest_username' WHERE account_id=$account_id;";
+        $sql .= "UPDATE users SET email='$email' WHERE account_id=$account_id;";
+
+        if($password != NULL){
+            if($password = $confirmpassword) {
+                $sql .= "UPDATE accounts SET password='$hashed_password' WHERE account_id=$account_id;";
+            } else {
+                $_SESSION["success"] = 0;
+                $_SESSION["message"] = "Check your password";
+                header("Location: ../edit-owner.php");
+                exit;
+            }
+        }
+        if($this->conn->multi_query(($sql))){
+            $_SESSION["success"] = 1;
+            $_SESSION["message"] = "Successfully Updated.";
+            header("Location:../mypage-restaurant.php");
+            exit;
+        } else {
+            $_SESSION["success"] = 0;
+            $_SESSION["message"] = "Update failed. Please kinldy check again.";
+            header("Location:../edit-owner.php");
+            exit;
+        }
+
+        }
     
     public function getAccountID(){
         return $this->account_id;
@@ -161,6 +235,11 @@ class User extends Database{
     public function getEmail(){
         return $this->email;
     }
+
+    public function getPassward(){
+        return $this->password;
+    }
+
 }
 
 ?>

@@ -1,3 +1,15 @@
+<?php
+
+include 'class/user.php';
+
+$user = new User($_SESSION["account_id"]);
+
+$account_id = $user->getAccountID();
+$rest_username = $user->getRestUsername();
+$email = $user->getEmail();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +42,7 @@
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php">{username}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
@@ -55,20 +67,46 @@
     
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5 w-50">
-            <h4 class="mb-3">My Page</h4>
+        <?php
+                    if(isset($_SESSION["success"]) && ($_SESSION["message"])){
+                        $class=($_SESSION["success"] == 0) ? "danger" : "success";
+                        $message=($_SESSION["message"]);
+
+                        unset($_SESSION["success"]);
+                        unset($_SESSION["message"]);
+                ?>    
+                    <div class='alert alert-<?php echo $class; ?>' role='alert'>
+                    <?php echo "$message"; ?>
+                    </div>
+                <?php
+                }    
+                ?>
             <form action="" method="POST">
-                <div class="form-group mb-3">
-                    {email}
+            <div class="row">
+                <div class="col-6">
+                    <h4 class="mt-3 mb-3">My Page</h4>
+                </div>
+                <div class="col-6">
+                    <a href="edit-owner.php" class="btn btn-block btn-outline-success mt-3">EDIT</a>
+                </div>
+                <div class="col-3"></div>
+            </div>
+            <form action="" method="POST">
+                <div class="form-group mt-5 mb-3">
+                    <?php echo "$rest_username"; ?>
                 </div>
                 <div class="form-group mb-3">
-                    {restaurant username}
+                    <?php echo "$email"; ?>
                 </div>
-                <div class="form-group mb-3">
-                    {password}
+                <div class="row">
+                <div class="col-6">
+                    <h4 class="mt-3 mb-3">My Restaurant</h4>
                 </div>
-                <input type="submit" value="EDIT" name="post" id="post" class="btn btn-block btn-outline-success mt-3">
-                <h4 class="mt-5">My Restaurant</h4>
-                <button type="button" class="btn btn-success mt-3">Add Restaurant</button>
+                <div class="col-6">
+                    <a href="edit-owner.php" class="btn btn-block btn-outline-success mt-3">EDIT</a>
+                </div>
+                <div class="col-3"></div>
+                </div>
                 <div class="mt-3">
                     <table class="table table-striped mt-3">
                         <thead>

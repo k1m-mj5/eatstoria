@@ -1,3 +1,14 @@
+<?php
+
+include 'class/user.php';
+
+$user = new User($_SESSION["account_id"]);
+
+$account_id = $user->getAccountID();
+$username = $user->getUsername();
+$email = $user->getEmail();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,15 +33,13 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="#!">EATSTORIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php">{username}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?> </a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
@@ -52,27 +61,49 @@
             </div>
         </div>
     </header>
-    
+
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5 w-50">
-            <h4 class="mb-3">My Page</h4>
+            <div>
+                <?php
+                if (isset($_SESSION["success"]) && ($_SESSION["message"])) {
+                    $class = ($_SESSION["success"] == 0) ? "danger" : "success";
+                    $message = ($_SESSION["message"]);
+                    unset($_SESSION["success"]);
+                    unset($_SESSION["message"]);
+                ?>
+                    <div class='alert alert-<?php echo $class; ?>' role='alert'>
+                        <?php echo "$message"; ?>
+                    </div>
+                <?php
+                }
+                ?>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <h4 class="mt-3 mb-3">My Page</h4>
+                </div>
+                <div class="col-6">
+                    <a href="edit-user.php" class="btn btn-block btn-outline-success mt-3">EDIT</a>
+                </div>
+                <div class="col-3"></div>
+            </div>
             <form action="" method="POST">
-                <div class="form-group mb-3">
-                    {email}
+                <div class="form-group mt-5 mb-3">
+                    <?php echo "$username"; ?>
                 </div>
                 <div class="form-group mb-3">
-                    {username}
+                    <?php echo "$email"; ?>
                 </div>
-                <div class="form-group mb-3">
-                    {password}
+
+                <div>
+                    <h4 class="mt-5">My Order</h4>
                 </div>
-                <input type="submit" value="EDIT" name="post" id="post" class="btn btn-block btn-outline-success mt-3">
-                <h4 class="mt-5">My Order</h4>
             </form>
         </div>
-        
+
     </section>
-    
+
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container px-5">

@@ -5,7 +5,7 @@ if(isset($_SESSION["role"]) && $_SESSION["role"]=="A"){
     header("Location: index.php");
 } elseif(isset($_SESSION["role"]) && $_SESSION["role"]=="U"){
     header("Location: mypage-user.php");
-}
+} 
 
 ?>
 

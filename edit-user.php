@@ -1,3 +1,16 @@
+<?php
+
+include 'class/user.php';
+
+$user = new User($_SESSION["account_id"]);
+
+$account_id = $user->getAccountID();
+$username = $user->getUsername();
+$email = $user->getEmail();
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,15 +35,13 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="#!">EATSTORIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php">{username}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="#!">LOGOUT</a></li>
                 </ul>
             </div>
@@ -52,29 +63,47 @@
             </div>
         </div>
     </header>
-    
+
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5 w-50">
-            <h4 class="mb-3">Edit User Account</h4>
-            <form action="" method="POST">
+            <div>
+                <?php
+                if (isset($_SESSION["success"]) && ($_SESSION["message"])){
+                    $class=($_SESSION["success"] == 0) ? "danger" : "success";
+                    $message=($_SESSION["message"]);
+
+                    unset($_SESSION["success"]);
+                    unset($_SESSION["message"]);
+                ?>    
+                    <div class='alert alert-<?php echo $class; ?>' role='alert'>
+                    <?php echo "$message"; ?>
+                    </div>
+                <?php
+                }
+                ?>     
+            </div>
+
+            <h4 class="mt-5 mb-3">Edit User Account</h4>
+            <form action="action/edit-user.php" method="POST">
                 <div class="form-group mb-3">
-                    <input type="email" class="form-control" name="email" placeholder="Email" required="required">
+                    <input type="text" class="form-control" name="username" value="<?php echo "$username"; ?>" required="required">
                 </div>
                 <div class="form-group mb-3">
-                    <input type="text" class="form-control" name="username" placeholder="Username" required="required">
+                    <input type="email" class="form-control" name="email" value="<?php echo "$email"; ?>" required="required">
+                </div>
+
+                <div class="form-group mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Password">
                 </div>
                 <div class="form-group mb-3">
-                    <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+                    <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm Password">
                 </div>
-                <div class="form-group mb-3">
-                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required="required">
-                </div>
-                <input type="submit" value="EDIT" name="post" id="post" class="btn btn-block btn-success text-light mt-3 w-100">
+                <input type="submit" value="EDIT" name="edit" id="edit" class="btn btn-block btn-success text-light mt-3 w-100">
             </form>
         </div>
-        
+
     </section>
-    
+
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container px-5">

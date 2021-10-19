@@ -1,3 +1,11 @@
+<?php
+
+include 'class/user.php';
+$user = new User($_SESSION["account_id"]);
+$account_id = $user->getAccountID();
+$rest_username = $user->getRestUsername();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,7 +36,7 @@
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php">{username}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$rest_username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="#!">LOGOUT</a></li>
                 </ul>
             </div>
@@ -53,40 +61,29 @@
 
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5">
-            <form action="" method="POST">
+            <form action="action/add-restaurant.php" method="POST">
                 <div class="mt-3">
                     <label for="restname" class="form-label">Restaurant Name</label>
                     <input type="text" name="restname" id="" class="form-control">
                 </div>
                 <div class="mt-3">
-                    <label for="restname" class="form-label">Description</label>
-                    <input type="text" name="restname" id="" class="form-control">
+                    <label for="description" class="form-label">Description</label>
+                    <input type="text" name="description" id="" class="form-control">
                 </div>
                 <div class="mt-3">
                     <label for="location" class="form-label">Location</label>
-                    <input type="text" name="menu" id="" class="form-control">
+                    <input type="text" name="location" id="" class="form-control">
                 </div>
                 <div class="mt-3">
-                    <label for="openinghours" class="form-label">Opening hours</label>
-                    <input type="text" name="openinghours" id="" class="form-control">
+                    <label for="openinghour" class="form-label">Opening hours</label>
+                    <input type="text" name="openinghour" id="" class="form-control">
                 </div>
                 <div class="mt-3">
-                    <label for="location" class="form-label">Telephone</label>
-                    <input type="text" name="menu" id="" class="form-control">
+                    <label for="telephone" class="form-label">Telephone</label>
+                    <input type="text" name="telephone" id="" class="form-control">
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="" value="">
-                    <label class="form-check-label" for="">Eat In</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="" value="">
-                    <label class="form-check-label" for="">Take Out</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="" value="">
-                    <label class="form-check-label" for="">Delivery</label>
-                </div>
-                <div class="mt-3">
+                
+                <div class="mt-5">
                     <label for="menu" class="form-label">Menu List</label>
                     <i class="fas fa-plus">Edit Menu</i>
                 </div>
@@ -98,7 +95,7 @@
                         <input type="file" class="custom-file-input" id="">
                     </div>
                 </div>
-                <input type="submit" value="Add Restaurant" name="post" id="post" class="btn btn-block btn-info text-light mt-3 w-100">
+                <input type="submit" value="Add Restaurant" name="addrest" id="addrest" class="btn btn-block btn-info text-light mt-3 w-100">
             </form>
         </div>
 
