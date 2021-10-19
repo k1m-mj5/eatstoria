@@ -37,9 +37,9 @@ $email = $user->getEmail();
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index-owner.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-details.php">Restaurants</a></li>
                     <li class="nav-item"><a class="nav-link" href="mypage-owner.php"><?php echo "$rest_username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
@@ -64,58 +64,42 @@ $email = $user->getEmail();
     </header>
 
     <section class="py-5 border-bottom" id="features">
-        <div class="container px-5 my-5 w-50">
-            <div>
-                <?php
-                    if(isset($_SESSION["success"]) && ($_SESSION["message"])){
-                        $class=($_SESSION["success"] == 0) ? "danger" : "success";
-                        $message=($_SESSION["message"]);
-
-                        unset($_SESSION["success"]);
-                        unset($_SESSION["message"]);
-                ?>    
-                    <div class='alert alert-<?php echo $class; ?>' role='alert'>
-                    <?php echo "$message"; ?>
-                    </div>
-                <?php
-                }    
-                ?>
-            </div>
-            <h4 class="mb-3">Edit Owner Account</h4>
-            <form action="action/edit-owner.php" method="POST">
-                <div class="form-group mb-3">
-                    <input type="text" class="form-control" name="restusername" value="<?php echo "$rest_username"; ?>" required="required">
-                </div>
-                <div class="form-group mb-3">
-                    <input type="email" class="form-control" name="email" value="<?php echo "$email"; ?>" required="required">
-                </div>
-                <div class="form-group mb-3">
-                    <input type="password" class="form-control" name="password" placeholder="Password">
-                </div>
-                <div class="form-group mb-3">
-                    <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm Password">
-                </div>
-                <input type="submit" value="EDIT" name="edit" id="edit" class="btn btn-block btn-success text-light mt-3 mb-3 w-100">
-                <div class="form-group mb-3">
-                <a href="add-restaurant.php" class="btn btn-block btn-warning mt-3">Add Restaurant</a>
+        <div class="container px-5 my-5">
+            <div class="card mx-auto">
+                <img class="card-img-bottom" src="..." alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Restaurant Name</h5>
+                    <p class="card-text">Description</p>
+                    <a href="#">Reviews</a>
+                    <p>Retaurant Information</p>
+                    <ul>
+                        <li>Location</li>
+                        <li>Opening hours</li>
+                        <li>Telephone</li>
+                    </ul>
                     <table class="table table-striped mt-3">
                         <thead>
                             <tr>
-                                <th scope="col">Restaurant Name</th>
+                                <th scope="col">Menu</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Description</th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
+                            </tr>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <th scope="row">1</th>
-                                <th><a href="restaurant-details-owner.php" class="btn btn-outline-info">Details</a></th>
-                                <th><a href="#" class="btn btn-danger">Delete</a></th>
+                                <th scope="row">Menu1</th>
+                                <td>price1</td>
+                                <td>descrip1</td>
+                                <td><button type="button" class="btn btn-outline-info">View Picture</button></td>
+                                <td><button type="button" class="btn btn-warning text-light">ORDER HERE</button></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </form>
+            </div>
         </div>
 
     </section>
