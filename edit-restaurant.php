@@ -1,3 +1,27 @@
+<?php
+
+include 'class/user.php';
+
+$user = new User($_SESSION["account_id"]);
+
+$rest_username = $user->getRestUsername();
+
+
+include 'class/restaurant.php';
+
+$rest_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
+
+$restaurant = new Restaurant($rest_id);
+
+$rest_id = $restaurant->getRestID();
+$rest_name = $restaurant->getRestname();
+$description = $restaurant->getDescription();
+$location = $restaurant->getLocation();
+$telephone = $restaurant->getTelephone();
+$open_hour = $restaurant->getOpenhour();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,15 +46,13 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="#!">EATSTORIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index-owner.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php">{username}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="#!">LOGOUT</a></li>
                 </ul>
             </div>
@@ -52,52 +74,58 @@
             </div>
         </div>
     </header>
-    
+
     <section class="py-5 border-bottom" id="features">
+        <div class="row">
+            <div class="col-4 mx-auto">
+                <?php
+                if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                    
+                    $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                    $message = $_SESSION["message"];
+
+                    unset($_SESSION["success"]);
+                    unset($_SESSION["message"]);
+                ?>
+
+                    <div class="alert alert-<?php echo $class; ?>" role="alert">
+                        <?php echo $message; ?>
+                    </div>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
         <div class="container px-5 my-5">
-            <form action="" method="POST">
+            <form action="action/edit-restaurant.php" method="POST">
+                <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
                 <div class="mt-3">
                     <label for="restname" class="form-label">Restaurant Name</label>
-                    <input type="text" name="restname" id="" class="form-control">
+                    <input type="text" name="restname" value="<?php echo $rest_name; ?>" class="form-control" required="required">
                 </div>
                 <div class="mt-3">
-                    <label for="restname" class="form-label">Description</label>
-                    <input type="text" name="restname" id="" class="form-control">
+                    <label for="description" class="form-label">Description</label>
+                    <input type="text" name="description" value="<?php echo $description; ?>" class="form-control" required="required">
                 </div>
                 <div class="mt-3">
                     <label for="location" class="form-label">Location</label>
-                    <input type="text" name="menu" id="" class="form-control">
+                    <input type="text" name="location" value="<?php echo $location; ?>" class="form-control" required="required">
                 </div>
                 <div class="mt-3">
                     <label for="openinghours" class="form-label">Opening hours</label>
-                    <input type="text" name="openinghours" id="" class="form-control">
+                    <input type="text" name="openinghours" value="<?php echo $open_hour; ?>" class="form-control" required="required">
                 </div>
                 <div class="mt-3">
-                    <label for="location" class="form-label">Telephone</label>
-                    <input type="text" name="menu" id="" class="form-control">
+                    <label for="telephone" class="form-label">Telephone</label>
+                    <input type="text" name="telephone" value="<?php echo $telephone; ?>" class="form-control" required="required">
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="" value="">
-                    <label class="form-check-label" for="">Eat In</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="" value="">
-                    <label class="form-check-label" for="">Take Out</label>
-                  </div>  
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="" value="">
-                    <label class="form-check-label" for="">Delivery</label>
-                  </div> 
-                <div class="mt-3">
-                    <label for="menu" class="form-label">Menu List</label>
-                    <i class="fas fa-plus">Edit Menu</i>
-                </div>   
+
                 <div class="input-group mt-3 mb-3">
                     <div class="input-group-prepend">
-                      <span class="input-group-text">Image Upload</span>
+                        <span class="input-group-text">Image Upload</span>
                     </div>
                     <div class="rest-file">
-                      <input type="file" class="custom-file-input" id="">
+                        <input type="file" class="custom-file-input" id="">
                     </div>
                 </div>
                 <div class="row">
@@ -106,15 +134,14 @@
                         <input type="submit" value="EDIT" name="edit" id="edit" class="btn btn-block btn-info text-light mt-3 w-100">
                     </div>
                     <div class="col-2">
-                        <input type="submit" value="DELETE" name="delete" id="delete"
-                            class="btn btn-block btn-danger text-light mt-3 w-100">
+                        <input type="submit" value="DELETE" name="delete" id="delete" class="btn btn-block btn-danger text-light mt-3 w-50">
                     </div>
                 </div>
             </form>
         </div>
-        
+
     </section>
-    
+
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container px-5">

@@ -3,10 +3,13 @@
 include 'class/user.php';
 
 $user = new User($_SESSION["account_id"]);
-
 $account_id = $user->getAccountID();
 $rest_username = $user->getRestUsername();
 $email = $user->getEmail();
+
+include 'class/restaurant.php';
+
+$restaurant = new Restaurant();
 
 ?>
 
@@ -64,7 +67,7 @@ $email = $user->getEmail();
     </header>
 
     <section class="py-5 border-bottom" id="features">
-        <div class="container px-5 my-5 w-50">
+        <div class="container px-5 my-5 w-75">
             <div>
                 <?php
                     if(isset($_SESSION["success"]) && ($_SESSION["message"])){
@@ -101,6 +104,7 @@ $email = $user->getEmail();
                     <table class="table table-striped mt-3">
                         <thead>
                             <tr>
+                                <th scope="col">Restaurant ID</th>
                                 <th scope="col">Restaurant Name</th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
@@ -108,9 +112,13 @@ $email = $user->getEmail();
                         </thead>
                         <tbody>
                             <tr>
-                                <th scope="row">1</th>
-                                <th><a href="restaurant-details-owner.php" class="btn btn-outline-info">Details</a></th>
-                                <th><a href="#" class="btn btn-danger">Delete</a></th>
+                            <?php
+                            if($_SESSION["role"]=="R"){
+                                $restaurant->displayRestListOnEdit($_SESSION["account_id"]);
+                            } else {
+                                header ("Location:../index.php");
+                            }
+                          ?>
                             </tr>
                         </tbody>
                     </table>

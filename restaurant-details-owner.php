@@ -8,6 +8,20 @@ $account_id = $user->getAccountID();
 $rest_username = $user->getRestUsername();
 $email = $user->getEmail();
 
+include 'class/restaurant.php';
+
+$rest_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
+
+$restaurant = new Restaurant($rest_id);
+$rest_id = $restaurant->getRestID();
+$rest_name = $restaurant->getRestname();
+$description = $restaurant->getDescription();
+$location = $restaurant->getLocation();
+$telephone = $restaurant->getTelephone();
+$open_hour = $restaurant->getOpenhour();
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -34,15 +48,13 @@ $email = $user->getEmail();
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="#!">EATSTORIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="index-owner.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-details.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-owner.php"><?php echo "$rest_username"; ?></a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
@@ -64,55 +76,75 @@ $email = $user->getEmail();
             </div>
         </div>
     </header>
-    
+
     <section class="py-5 border-bottom" id="features">
+        <div class="row">
+            <div class="col-4 mx-auto">
+                <?php
+                if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+
+                    $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                    $message = $_SESSION["message"];
+
+                    unset($_SESSION["success"]);
+                    unset($_SESSION["message"]);
+                ?>
+
+                    <div class="alert alert-<?php echo $class; ?>" role="alert">
+                        <?php echo $message; ?>
+                    </div>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
         <div class="container px-5 my-5">
             <div class="card mx-auto">
                 <img class="card-img-bottom" src="..." alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title">Restaurant Name</h5>
-                    <p class="card-text">Description</p>
+                    <h5 class="card-title"><?php echo $rest_name; ?></h5>
+                    <p class="card-text"><?php echo $description; ?></p>
                     <a href="#">Reviews</a>
                     <p>Retaurant Information</p>
                     <ul>
-                        <li>Location</li>
-                        <li>Opening hours</li>
-                        <li>Telephone</li>
+                        <li>Location: <?php echo $location; ?></li>
+                        <li>Opening hours: <?php echo $open_hour; ?></li>
+                        <li>Telephone: <?php echo $telephone; ?></li>
                     </ul>
                     <table class="table table-striped mt-3">
                         <thead>
-                          <tr>
-                            <th scope="col">Menu</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Description</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                          </tr>
-                          </tr>
+                            <tr>
+                                <th scope="col">Menu</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Description</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                            </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <th scope="row">Menu1</th>
-                            <td>price1</td>
-                            <td>descrip1</td>
-                            <td><button type="button" class="btn btn-outline-info">View Picture</button></td>
-                            <td><button type="button" class="btn btn-outline-warning">Check Order</button></td>
-                          </tr>
+                            <tr>
+                                <th scope="row">Menu1</th>
+                                <td>price1</td>
+                                <td>descrip1</td>
+                                <td><button type="button" class="btn btn-outline-info">View Picture</button></td>
+                                <td><button type="button" class="btn btn-outline-warning">Check Order</button></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6"></div>
-                <div class="col-4"><a href="restaurant-details.php" class="btn btn-warning w-100 mt-3">Edit Menu</a></div>
-                <div class="col-2"><a href="restaurant-details.php" class="btn btn-secondary w-100 mt-3">Edit Restaurant</a></div>
-            
-            
+                <div class="col-4"><a href="#" class="btn btn-warning w-100 mt-3">Edit Menu</a></div>
+                <div class="col-2"><a href="edit-restaurant.php?id=<?php echo $rest_id ?>" class="btn btn-secondary w-100 mt-3">Edit Restaurant</a></div>
+
+
             </div>
         </div>
-        
+
     </section>
-    
+
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container px-5">
