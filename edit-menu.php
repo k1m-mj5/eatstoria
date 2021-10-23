@@ -1,12 +1,27 @@
 <?php
 
 include 'class/user.php';
-
 $user = new User($_SESSION["account_id"]);
-
 $account_id = $user->getAccountID();
-$username = $user->getUsername();
-$email = $user->getEmail();
+$rest_username = $user->getRestUsername();
+
+include 'class/menu.php';
+
+$menu_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
+
+$menu = new Menu($menu_id);
+
+$menu_id = $menu->getMenuID();
+$menu_title = $menu->getMenuTitle();
+$price = $menu->getPrice();
+$description = $menu->getDescription();
+$rest_id = $menu->getRest_id();
+
+include 'class/restaurant.php';
+
+$restaurant = new Restaurant($rest_id);
+
+$rest_name = $restaurant->getRestname();
 
 
 ?>
@@ -38,10 +53,10 @@ $email = $user->getEmail();
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="index-owner.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?></a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
@@ -65,44 +80,73 @@ $email = $user->getEmail();
     </header>
 
     <section class="py-5 border-bottom" id="features">
-        <div class="container px-5 my-5 w-50">
-            <div>
+        <div class="row">
+            <div class="col-4 mx-auto">
                 <?php
-                if (isset($_SESSION["success"]) && ($_SESSION["message"])){
-                    $class=($_SESSION["success"] == 0) ? "danger" : "success";
-                    $message=($_SESSION["message"]);
+                if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+
+                    $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                    $message = $_SESSION["message"];
 
                     unset($_SESSION["success"]);
                     unset($_SESSION["message"]);
-                ?>    
-                    <div class='alert alert-<?php echo $class; ?>' role='alert'>
-                    <?php echo "$message"; ?>
+                ?>
+
+                    <div class="alert alert-<?php echo $class; ?>" role="alert">
+                        <?php echo $message; ?>
                     </div>
                 <?php
                 }
-                ?>     
+                ?>
             </div>
-
-            <h4 class="mt-5 mb-3">Edit User Account</h4>
-            <form action="action/edit-user.php" method="POST">
-                <div class="form-group mb-3">
-                    <input type="text" class="form-control" name="username" value="<?php echo "$username"; ?>" required="required">
+        </div>
+        <div class="container px-5 my-5">
+            <h4 class="text-center"><?php echo "$rest_name"; ?></h4>
+            <form action="action/edit-menu.php" method="POST">
+                <input type="id" name="menu_id" value="<?php echo $menu_id; ?>" hidden>
+                <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
+                <div class="row">
+                    <div class="col-6 mt-3">
+                        <label for="menu" class="form-label">Menu</label>
+                        <input type="text" name="editmenutitle" value="<?php echo $menu_title; ?>" class="form-control" required>
+                    </div>
+                    <div class="col-6 mt-3">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="price" class="form-label">Price</label>
+                                <input type="number" name="editprice" value="<?php echo $price; ?>" class="form-control" min=0 required>
+                            </div>
+                            <div class="col-6">
+                                <label for="usd" class="form-label"></label>
+                                <h5>USD</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="menudescription" class="form-label">Description</label>
+                        <input type="text" name="editdescription" value="<?php echo $description; ?>" class="form-control" required>
+                    </div>
+                    <div class="input-group mt-3 mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Image Upload</span>
+                        </div>
+                        <div class="rest-file">
+                            <input type="file" class="custom-file-input" id="">
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group mb-3">
-                    <input type="email" class="form-control" name="email" value="<?php echo "$email"; ?>" required="required">
+                <div class="row">
+                    <div class="col-9"></div>
+                    <div class="col-3">
+                        <input type="submit" value="Edit Menu" name="editmenu" id="editmenu" class="btn btn-block btn-info text-light mt-3 w-100">
+                    </div>
                 </div>
-
-                <div class="form-group mb-3">
-                    <input type="password" class="form-control" name="password" placeholder="Password">
-                </div>
-                <div class="form-group mb-3">
-                    <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm Password">
-                </div>
-                <input type="submit" value="EDIT" name="edit" id="edit" class="btn btn-block btn-success text-light mt-3 w-100">
             </form>
+
         </div>
 
     </section>
+
 
     <!-- Footer-->
     <footer class="py-5 bg-dark">

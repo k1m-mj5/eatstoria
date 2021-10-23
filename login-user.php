@@ -136,11 +136,30 @@ if(isset($_SESSION["role"]) && $_SESSION["role"]=="A"){
 </header>
 <body>
     <div class="signup-form">
+    <div class="row mt-5">
+            <div class="col-6 mx-auto">
+                <?php
+                if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                    
+                    $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                    $message = $_SESSION["message"];
+
+                    
+                    unset($_SESSION["success"]);
+                    unset($_SESSION["message"]);
+                ?>
+
+                    <div class="alert alert-<?php echo $class; ?>" role="alert">
+                        <?php echo $message; ?>
+                    </div>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
         <form action="action/login-user.php" method="POST">
             <h2>Login</h2>
-            
-            
-            <div class="form-group">
+                <div class="form-group">
                 <input type="username" class="form-control" name="username" placeholder="Username" required="required">
             </div>
             <div class="form-group">

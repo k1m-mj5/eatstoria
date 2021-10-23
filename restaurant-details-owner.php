@@ -20,6 +20,9 @@ $location = $restaurant->getLocation();
 $telephone = $restaurant->getTelephone();
 $open_hour = $restaurant->getOpenhour();
 
+include 'class/menu.php';
+
+$menu = new Menu();
 
 
 ?>
@@ -78,71 +81,75 @@ $open_hour = $restaurant->getOpenhour();
     </header>
 
     <section class="py-5 border-bottom" id="features">
-        <div class="row">
-            <div class="col-4 mx-auto">
-                <?php
-                if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+        <form action="" method="POST">
+            <div class="row">
+                <div class="col-4 mx-auto">
+                    <?php
+                    if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
 
-                    $class = ($_SESSION["success"] == 1) ? "success" : "danger";
-                    $message = $_SESSION["message"];
+                        $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                        $message = $_SESSION["message"];
 
-                    unset($_SESSION["success"]);
-                    unset($_SESSION["message"]);
-                ?>
+                        unset($_SESSION["success"]);
+                        unset($_SESSION["message"]);
+                    ?>
 
-                    <div class="alert alert-<?php echo $class; ?>" role="alert">
-                        <?php echo $message; ?>
-                    </div>
-                <?php
-                }
-                ?>
-            </div>
-        </div>
-        <div class="container px-5 my-5">
-            <div class="card mx-auto">
-                <img class="card-img-bottom" src="..." alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title"><?php echo $rest_name; ?></h5>
-                    <p class="card-text"><?php echo $description; ?></p>
-                    <a href="#">Reviews</a>
-                    <p>Retaurant Information</p>
-                    <ul>
-                        <li>Location: <?php echo $location; ?></li>
-                        <li>Opening hours: <?php echo $open_hour; ?></li>
-                        <li>Telephone: <?php echo $telephone; ?></li>
-                    </ul>
-                    <table class="table table-striped mt-3">
-                        <thead>
-                            <tr>
-                                <th scope="col">Menu</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Description</th>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                            </tr>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">Menu1</th>
-                                <td>price1</td>
-                                <td>descrip1</td>
-                                <td><button type="button" class="btn btn-outline-info">View Picture</button></td>
-                                <td><button type="button" class="btn btn-outline-warning">Check Order</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <div class="alert alert-<?php echo $class; ?>" role="alert">
+                            <?php echo $message; ?>
+                        </div>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-6"></div>
-                <div class="col-4"><a href="#" class="btn btn-warning w-100 mt-3">Edit Menu</a></div>
-                <div class="col-2"><a href="edit-restaurant.php?id=<?php echo $rest_id ?>" class="btn btn-secondary w-100 mt-3">Edit Restaurant</a></div>
+            <div class="container px-5 my-5">
+                <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
+                <div class="card mx-auto">
+                    <img class="card-img-bottom" src="..." alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo $rest_name; ?></h5>
+                        <p class="card-text"><?php echo $description; ?></p>
+                        <a href="#">Reviews</a>
+                        <p>Retaurant Information</p>
+                        <ul>
+                            <li>Location: <?php echo $location; ?></li>
+                            <li>Opening hours: <?php echo $open_hour; ?></li>
+                            <li>Telephone: <?php echo $telephone; ?></li>
+                        </ul>
+                        <table class="table table-striped mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Menu</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if ($_SESSION["role"] == "R") {
+                                    $menu->displayMenuOnDetailsOwner($rest_id);
+                                } else {
+                                    header("Location:../index.php");
+                                    exit;
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-4"><a href="add-menu.php?id=<?php echo $rest_id ?>" class="btn btn-warning w-100 mt-3">Add & Edit Menu</a></div>
+                    <div class="col-2"><a href="edit-restaurant.php?id=<?php echo $rest_id ?>" class="btn btn-secondary w-100 mt-3">Edit Restaurant</a></div>
 
 
+                </div>
             </div>
-        </div>
-
+        </form>
     </section>
 
     <!-- Footer-->

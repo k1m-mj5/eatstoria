@@ -96,6 +96,7 @@ class User extends Database{
         
         if($result && $result->num_rows==1){
             $user = $result->fetch_assoc();
+            
             if(password_verify($password,$user["password"])){
                 $_SESSION["account_id"] = $user["account_id"];
                 $_SESSION["username"] = $user["username"];
@@ -166,7 +167,7 @@ class User extends Database{
         $sql .= "UPDATE users SET email = '$email'
                 WHERE account_id=$account_id;";
 
-        if($password !== NULL){
+        if(!empty($password)){
             if($password == $confirmpassword){
             $sql .= "UPDATE accounts SET password='$hashed_password' WHERE accounts.account_id=$account_id;";
             } 
@@ -196,7 +197,7 @@ class User extends Database{
         $sql = "UPDATE accounts SET rest_username='$rest_username' WHERE account_id=$account_id;";
         $sql .= "UPDATE users SET email='$email' WHERE account_id=$account_id;";
 
-        if($password != NULL){
+        if(!empty($password)){
             if($password = $confirmpassword) {
                 $sql .= "UPDATE accounts SET password='$hashed_password' WHERE account_id=$account_id;";
             } else {

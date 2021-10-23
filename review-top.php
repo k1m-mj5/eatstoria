@@ -1,3 +1,15 @@
+<?php
+
+include 'class/user.php';
+
+$user = new User($_SESSION["account_id"]);
+
+$account_id = $user->getAccountID();
+$username = $user->getUsername();
+$email = $user->getEmail();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,8 +42,8 @@
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="review-top.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php">{username}</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">LOGOUT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?> </a></li>
+                    <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
         </div>
@@ -55,8 +67,8 @@
     
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5">
-            <div class="d-flex align-items-end flex-column">
-                <button type="button" class="btn btn-outline-warning mb-5"><a href="add-review.php">Add Review</a></button>
+            <div class="d-flex align-items-end flex-column mt-3 mb-3">
+            <a href="add-review.php" class="btn btn-block btn-outline-warning">Add Review</a>
             </div>
             <div class="row gx-5">
                 <div class="col-lg-4 mb-5 mb-lg-0">

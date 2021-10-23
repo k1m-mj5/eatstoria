@@ -137,4 +137,23 @@ class Restaurant extends Database{
         }        
     }
 
+    // public function displayRestNameOnAddReviewAsRow(){
+    //     $sql = "SELECT * FROM restaurant";
+    //     $result = $this->conn->query($sql);
+
+    //     if($result && $result->num_rows>0){
+    //         if($rest_id == NULL) {
+    //             echo "<option disabled selected>Select Restaurant</option>";
+    //         }
+    //         while($row = $result->fetch_assoc()){
+    //             if($rest_id == $row["rest_id"]){
+    //                 echo "<option value='".$row["rest_id"]."' selected>".$row["rest_name"]."</option>";
+    //             } else {
+    //                 echo "<option value='".$row["rest_id"]."'>".$row["rest_name"]."</option>";
+    //             }
+    //         }
+    //     } else {
+    //         echo "<option disabled selected>No Restaurants to choose from</option>";
+    //     }
+    // }
 }
