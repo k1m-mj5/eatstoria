@@ -22,6 +22,8 @@ $restaurant = new Restaurant();
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>EATSTORIA</title>
+    <!-- Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap icons-->
@@ -33,6 +35,12 @@ $restaurant = new Restaurant();
         integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
+<style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+</style>
 
 <body>
     <!-- Responsive navbar-->

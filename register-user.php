@@ -17,8 +17,8 @@ session_start();
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <style>
         body {
-            color: #fff;
-            background: #f0ad4e;
+            color: yellow;
+            background: #fff;
             font-family: 'Roboto', sans-serif;
         }
 
@@ -42,6 +42,22 @@ session_start();
             margin: 0 auto;
             padding: 30px 0;
             font-size: 15px;
+        }
+
+        .signup-form h1 {
+            color: #fbbd07;
+            margin: 0 0 15px;
+            position: relative;
+            text-align: center;
+            text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2), 0px -3px 20px rgba(255, 255, 255, 0.4)
+        }
+
+        .signup-form h1:before {
+            left: 0;
+        }
+
+        .signup-form h1:after {
+            right: 0;
         }
 
         .signup-form h2 {
@@ -130,10 +146,10 @@ session_start();
 
 <body>
     <div class="container">
-        
         <div class="signup-form">
-                <h2>Register</h2>
-                <p class="hint-text">Create your <span class="text-success font-weight-bold">personal</span> account.</p>
+            <h1>EATSTORIA</h1>
+            <h2>Register</h2>
+            <p class="hint-text">Create your <span class="text-warning font-weight-bold">personal</span> account.</p>
             <form action="action/register-user.php" method="POST">
                 <div class="form-group">
                     <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
@@ -152,7 +168,7 @@ session_start();
                     </label>
                 </div>
                 <div class="form-group">
-                <input type="submit" value="Register Now" name="submit" class="btn btn-success btn-block">
+                    <input type="submit" value="Register Now" name="submit" class="btn btn-warning btn-block text-light font-weight-bold">
                 </div>
 
                 <div class="text-center text-danger font-weight-bold">Are you an owner?
@@ -160,7 +176,7 @@ session_start();
                 </div>
                 <div class="mt-3 text-right">
                     <span class="text-muted">Have an account?</span>
-                    <a href="index.php" class="text-decoration-none">Sign in</a>
+                    <a href="index.php" class="text-decoration-none font-weight-bold">Sign in</a>
                 </div>
             </form>
         </div>

@@ -24,8 +24,7 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] == "A") {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <style>
         body {
-            color: #fff;
-            background: #f0ad4e;
+            background: #fff;
             font-family: 'Roboto', sans-serif;
         }
 
@@ -50,6 +49,22 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] == "A") {
             padding: 30px 0;
             font-size: 15px;
         }
+
+        .signup-form h1 {
+            color: #fbbd07;
+            margin: 0 0 15px;
+            position: relative;
+            text-align: center;
+            text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2), 0px -3px 20px rgba(255, 255, 255, 0.4)
+        }
+
+        .signup-form h1:before {
+            left: 0;
+        }
+
+        .signup-form h1:after {
+            right: 0;
+        }    
 
         .signup-form h2 {
             color: #636363;
@@ -137,8 +152,30 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] == "A") {
 
 <body>
     <div class="signup-form">
+    <div class="row mt-5">
+            <div class="col-6 mx-auto">
+                <?php
+                if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                    
+                    $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                    $message = $_SESSION["message"];
+
+                    
+                    unset($_SESSION["success"]);
+                    unset($_SESSION["message"]);
+                ?>
+
+                    <div class="alert alert-<?php echo $class; ?>" role="alert">
+                        <?php echo $message; ?>
+                    </div>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
+        <h1>EATSTORIA</h1>
+        <h2 class=mb-5>Login</h2>
         <form action="action/login-owner.php" method="POST">
-            <h2>Login</h2>
             <div class="form-group">
                 <input type="restusername" class="form-control" name="restusername" placeholder="Restaurant Username" required="required">
             </div>
@@ -147,14 +184,16 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] == "A") {
             </div>
 
             <div class="form-group">
-                <input type="submit" value="OWNER LOGIN" name="submit" class="btn btn-success btn-block">
+                <input type="submit" value="OWNER LOGIN" name="submit" class="btn btn-warning btn-block text-light font-weight-bold">
+            </div>
+            <div class="text-center text-secondary font-weight-bold">Forget your password?
+                <a href="#" class="text-decoration-none"> Click here</a>
+            </div>
+            <div class="text-center text-danger font-weight-bold mt-3">Personal Login
+                <a href="login-user.php" class="text-decoration-none"> Click here</a>
             </div>
         </form>
-        <div class="text-center text-secondary font-weight-bold mt-5 mb-5">Forget your password?
-            <a href="#" class="text-decoration-none"> Click here!</a>
-        </div>
-        <div class="text-center text-danger font-weight-bold">Aren't you an owner?
-            <a href="login-user.php" class="text-decoration-none"> Click here!</a>
-        </div>
-    </body>
-    </html>
+
+</body>
+
+</html>

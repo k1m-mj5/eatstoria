@@ -114,14 +114,12 @@ class User extends Database{
                 $_SESSION["message"] = "Incorrect password.";
                 header("Location: ../login-user.php");
                 exit;
-                //echo "password";
             } 
         } else {
             $_SESSION["success"] = 0;
             $_SESSION["message"] = "Incorrect username.";
             header("Location: ../login-user.php");
             exit;
-            //echo "username";
         }
     }
 
