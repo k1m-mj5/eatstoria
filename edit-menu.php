@@ -63,7 +63,7 @@ $rest_name = $restaurant->getRestname();
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="index-owner.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-top.php">Restaurants</a></li>
                     <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>

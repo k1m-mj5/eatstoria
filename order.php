@@ -20,9 +20,9 @@
 </head>
 
 <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 </style>
 
 <body>
@@ -30,9 +30,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="#!">EATSTORIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
@@ -60,9 +58,30 @@
             </div>
         </div>
     </header>
-    
+
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5">
+            <div class="row mt-5">
+                <div class="col-6 mx-auto">
+                    <?php
+                    if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                        //Input
+                        $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                        $message = $_SESSION["message"];
+
+                        //Delete session variables
+                        unset($_SESSION["success"]);
+                        unset($_SESSION["message"]);
+                    ?>
+
+                        <div class="alert alert-<?php echo $class; ?>" role="alert">
+                            <?php echo $message; ?>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                </div>
+            </div>
             <form action="" method="POST">
                 <div class="mt-3">
                     <h4>{Restaurant Name} Order</h4>
@@ -70,37 +89,37 @@
                 <div class="mt-3">
                     <table class="table table-striped mt-3">
                         <thead>
-                          <tr>
-                            <th scope="col">Menu</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Contact Number</th>
-                            <th scope="col">Way</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Time</th>
-                            <th scope="col">Message</th>
-                          </tr>
+                            <tr>
+                                <th scope="col">Menu</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Contact Number</th>
+                                <th scope="col">Way</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Message</th>
+                            </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                          </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                            </tr>
                         </tbody>
                     </table>
-                </div>        
+                </div>
             </form>
 
         </div>
-        
+
     </section>
-    
+
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container px-5">

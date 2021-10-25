@@ -122,7 +122,7 @@ class Restaurant extends Database{
     public function editRest($id, $rest_name, $description, $location, $open_hour, $telephone){
         $sql = "UPDATE restaurant SET rest_name='$rest_name', description='$description', location='$location', open_hour='$open_hour', telephone='$telephone'
                 WHERE rest_id=$id";
-        echo $sql;    
+        //echo $sql;    
 
         if($this->conn->query($sql)){
             $_SESSION["success"] = 1;

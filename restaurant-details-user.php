@@ -32,9 +32,9 @@ $email = $user->getEmail();
 </head>
 
 <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 </style>
 
 <body>
@@ -73,6 +73,27 @@ $email = $user->getEmail();
 
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5">
+            <div class="row mt-5">
+                <div class="col-6 mx-auto">
+                    <?php
+                    if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                        //Input
+                        $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                        $message = $_SESSION["message"];
+
+                        //Delete session variables
+                        unset($_SESSION["success"]);
+                        unset($_SESSION["message"]);
+                    ?>
+
+                        <div class="alert alert-<?php echo $class; ?>" role="alert">
+                            <?php echo $message; ?>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                </div>
+            </div>
             <div class="card mx-auto">
                 <img class="card-img-bottom" src="..." alt="Card image cap">
                 <div class="card-body">

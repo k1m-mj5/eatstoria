@@ -1,3 +1,29 @@
+<?php
+
+include 'class/user.php';
+
+$user = new User($_SESSION["account_id"]);
+
+$account_id = $user->getAccountID();
+$username = $user->getUsername();
+
+
+include 'class/review.php';
+
+$review_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
+
+$review = new Review($review_id);
+
+$rest_id = $review->getRestID();
+$rest_name = $review->getRestName();
+$menu_title = $review->getMenuTitle();
+$way = $review->getWay();
+$rating = $review->getRating();
+$message = $review->getMessage();
+$date_posted = $review->getDatePosted();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,9 +46,9 @@
 </head>
 
 <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 </style>
 
 <body>
@@ -30,15 +56,13 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="#!">EATSTORIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="review-details.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php">{username}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="#!">LOGOUT</a></li>
                 </ul>
             </div>
@@ -60,28 +84,73 @@
             </div>
         </div>
     </header>
-    
+
     <section class="py-5 border-bottom" id="features">
-        <div class="container px-5 my-5">
-            <div class="card w-75 mx-auto">
-                <div class="card-body">
-                  <h5 class="card-title">Restaurant Name</h5>
-                  <a href="#">Visit Restaurant Page</a>
-                  <p class="card-text">Menu</p>
-                  <p class="card-text">Rate</p>
-                  <p class="card-text">This is review</p>
-                  <p class="card-text"><small class="text-muted">Username \ Posted date</small></p>
+        <form action="" method="POST">
+            <div class="container px-5 my-5">
+                <div class="row mt-5">
+                    <div class="col-6 mx-auto">
+                        <?php
+                        if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                            //Input
+                            $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                            $message = $_SESSION["message"];
+
+                            //Delete session variables
+                            unset($_SESSION["success"]);
+                            unset($_SESSION["message"]);
+                        ?>
+
+                            <div class="alert alert-<?php echo $class; ?>" role="alert">
+                                <?php echo $message; ?>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
                 </div>
-                <img class="card-img-bottom" src="..." alt="Card image cap">
+                <div class="row mt-5">
+                    <div class="col-6 mx-auto">
+                        <?php
+                        if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                            //Input
+                            $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                            $message = $_SESSION["message"];
+
+                            //Delete session variables
+                            unset($_SESSION["success"]);
+                            unset($_SESSION["message"]);
+                        ?>
+
+                            <div class="alert alert-<?php echo $class; ?>" role="alert">
+                                <?php echo $message; ?>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+                <input type="id" name="review_id" value="<?php echo $review_id; ?>" hidden>
+                <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
+                <div class="card w-75 mx-auto">
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo "$rest_name"; ?></h5>
+                        <a href="restaurant-details-user.php?id=<?php echo $rest_id ?>" class="text-decoration-none">Visit Restaurant Page</a>
+                        <p class="card-text">Menu: <?php echo "$menu_title"; ?></p>
+                        <p class="card-text">Way: <?php echo "$way"; ?></p>
+                        <p class="card-text">Rating: <?php echo "$rating"; ?></p>
+                        <p class="card-text"><?php echo "$message"; ?></p>
+                        <p class="card-text"><small class="text-muted"><?php echo "$username"; ?> \ <?php echo "$date_posted"; ?></small></p>
+                    </div>
+                    <img class="card-img-bottom" src="..." alt="Card image cap">
+                </div>
+                <div class="d-flex align-items-end flex-column mt-3 mb-3">
+                    <a href="edit-review.php?id=<?php echo $review_id; ?>" class="btn btn-block btn-outline-info">Edit Review</a>
+                </div>
             </div>
-            <div class="d-flex align-items-end flex-column">
-                <button type="button" class="btn btn-outline-success mt-5"><a href="edit-review.php">Edit Review</a></button>
-                
-            </div>
-        </div>
-        
+        </form>
     </section>
-    
+
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container px-5">

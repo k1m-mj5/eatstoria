@@ -32,9 +32,9 @@ $email = $user->getEmail();
 </head>
 
 <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 </style>
 
 <body>
@@ -42,9 +42,7 @@ $email = $user->getEmail();
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="#!">EATSTORIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="index-owner.php">Home</a></li>
@@ -77,7 +75,9 @@ $email = $user->getEmail();
         <div class="container px-5 my-5">
             <div class="text-center mb-5">
                 <h2 class="fw-bolder">Recent Reviews</h2>
-                <a href="review-top.php" class="text-decoration-none text-info"><p class="lead mb-0">See other reviews</p></a>
+                <a href="review-top.php" class="text-decoration-none text-info">
+                    <p class="lead mb-0">See other reviews</p>
+                </a>
             </div>
             <div class="row gx-5">
                 <div class="col-lg-4 mb-5 mb-lg-0">
@@ -106,11 +106,32 @@ $email = $user->getEmail();
                 </div>
             </div>
         </div>
-        
+
     </section>
     <!-- Restaurant preview section-->
     <section class="bg-light py-5 border-bottom">
         <div class="container px-5 my-5">
+            <div class="row mt-5">
+                <div class="col-6 mx-auto">
+                    <?php
+                    if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                        //Input
+                        $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                        $message = $_SESSION["message"];
+
+                        //Delete session variables
+                        unset($_SESSION["success"]);
+                        unset($_SESSION["message"]);
+                    ?>
+
+                        <div class="alert alert-<?php echo $class; ?>" role="alert">
+                            <?php echo $message; ?>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                </div>
+            </div>
             <div class="text-center mb-5">
                 <h2 class="fw-bolder">Recommendation Restaurants</h2>
                 <p class="lead mb-0">Adorable restaurants near you</p>
@@ -126,8 +147,7 @@ $email = $user->getEmail();
                             <div class="small text-uppercase fw-bold text-muted">KOREAN</div>
                             <div class="mb-3">
                                 <span class="display-6 fw-bold">Seoul Soul</span>
-                                <img src="https://toppng.com/uploads/preview/square-115527604300vrdl6wlrv.png"
-                                    width="200" height="150" alt="">
+                                <img src="https://toppng.com/uploads/preview/square-115527604300vrdl6wlrv.png" width="200" height="150" alt="">
                             </div>
                             <ul class="list-unstyled mb-4">
                                 <li class="mb-2">
@@ -158,8 +178,7 @@ $email = $user->getEmail();
                             <div class="small text-uppercase fw-bold text-muted">JAPANESE</div>
                             <div class="mb-3">
                                 <span class="display-6 fw-bold">Asuka</span>
-                                <img src="https://toppng.com/uploads/preview/square-115527604300vrdl6wlrv.png"
-                                    width="200" height="150" alt="">
+                                <img src="https://toppng.com/uploads/preview/square-115527604300vrdl6wlrv.png" width="200" height="150" alt="">
                             </div>
                             <ul class="list-unstyled mb-4">
                                 <li class="mb-2">
@@ -190,8 +209,7 @@ $email = $user->getEmail();
                             <div class="small text-uppercase fw-bold text-muted">WESTERN</div>
                             <div class="mb-3">
                                 <span class="display-6 fw-bold">Mr. Steakhouse</span>
-                                <img src="https://toppng.com/uploads/preview/square-115527604300vrdl6wlrv.png"
-                                    width="200" height="150" alt="">
+                                <img src="https://toppng.com/uploads/preview/square-115527604300vrdl6wlrv.png" width="200" height="150" alt="">
                             </div>
                             <ul class="list-unstyled mb-4">
                                 <li class="mb-2">

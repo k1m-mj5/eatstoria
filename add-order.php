@@ -1,3 +1,18 @@
+<?php
+
+include 'class/user.php';
+
+$user = new User($_SESSION["account_id"]);
+
+$account_id = $user->getAccountID();
+$username = $user->getUsername();
+$email = $user->getEmail();
+
+include 'class/restaurant.php';
+$restaurant = new Restaurant();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,9 +35,9 @@
 </head>
 
 <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 </style>
 
 <body>
@@ -30,16 +45,14 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="#!">EATSTORIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php">{username}</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">LOGOUT</a></li>
+                <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="review-top-user.php">Reviews</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-top-user.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?> </a></li>
+                    <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
         </div>
@@ -60,9 +73,30 @@
             </div>
         </div>
     </header>
-    
+
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5 w-75">
+            <div class="row mt-5">
+                <div class="col-6 mx-auto">
+                    <?php
+                    if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                        //Input
+                        $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                        $message = $_SESSION["message"];
+
+                        //Delete session variables
+                        unset($_SESSION["success"]);
+                        unset($_SESSION["message"]);
+                    ?>
+
+                        <div class="alert alert-<?php echo $class; ?>" role="alert">
+                            <?php echo $message; ?>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                </div>
+            </div>
             <form action="" method="POST">
                 <div class="mt-3">
                     <label for="restname" class="form-label">Restaurant Name</label>
@@ -74,20 +108,20 @@
                 <div class="mt-3">
                     <label for="menu" class="form-label">Menu</label>
                     <div class="row">
-                    <div class="col-6">
-                        <input type="text" name="menu" id="" class="form-control">
-                    </div>
-                    <div class="col-6">
-                        <select name="" id="quantity" class="form-select w-100">
-                            <option disabled selected>Choose quantity</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">over 5 please contact directly</option>
-                        </select>
-                    </div>    
+                        <div class="col-6">
+                            <input type="text" name="menu" id="" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <select name="" id="quantity" class="form-select w-100">
+                                <option disabled selected>Choose quantity</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">over 5 please contact directly</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="mt-3">
@@ -105,17 +139,17 @@
                             <option value="2">Take Out</option>
                             <option value="3">Delivery</option>
                         </select>
-                    </div> 
-                    <div class="col-6">   
+                    </div>
+                    <div class="col-6">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                              <span class="input-group-text" id="">Date</span>
+                                <span class="input-group-text" id="">Date</span>
                             </div>
                             <input type="date" class="form-control" id="">
                             <input type="time" class="form-control" id="">
-                          </div>
+                        </div>
                     </div>
-                    
+
                 </div>
                 <div class="mt-3">
                     <label for="message" class="form-label">Message <span class="text-muted">(Leave your address in case of delivery)</span></label>
@@ -125,9 +159,9 @@
                 <input type="submit" value="ORDER" name="order" id="order" class="btn btn-block btn-warning text-light mt-3 w-100">
             </form>
         </div>
-        
+
     </section>
-    
+
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container px-5">

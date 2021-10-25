@@ -34,15 +34,13 @@ $review = new Review();
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <!-- Font Awesome-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 </style>
 
 <body>
@@ -50,14 +48,12 @@ $review = new Review();
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="#!">EATSTORIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="review-top-user.php">Reviews</a></li>
+                    <li class="nav-item"><a class="nav-link" href="review-top-user.php">Restaurants</a></li>
                     <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?> </a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
@@ -83,13 +79,34 @@ $review = new Review();
 
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5">
-            <form action="" method="POST">
+            <div class="row mt-5">
+                <div class="col-6 mx-auto">
+                    <?php
+                    if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                        //Input
+                        $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                        $message = $_SESSION["message"];
+
+                        //Delete session variables
+                        unset($_SESSION["success"]);
+                        unset($_SESSION["message"]);
+                    ?>
+
+                        <div class="alert alert-<?php echo $class; ?>" role="alert">
+                            <?php echo $message; ?>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                </div>
+            </div>
+            <form action="action/add-review.php" method="POST">
                 <div class="mt-3">
                     <label for="restname" class="form-label">Restaurant Name</label>
                     <br>
                     <select name="restname" id="restname" class="form-select">
                         <?php
-                            $restaurant->displayRestNameAsOptions();
+                        $restaurant->displayRestNameAsOptions();
                         ?>
                     </select>
                 </div>
@@ -99,30 +116,30 @@ $review = new Review();
                         <input type="text" name="menu" id="" class="form-control">
                     </div>
                     <div class="col-6 mt-3">
-                        <label for="menu" class="form-label">The way</label>
-                        <select name="" id="way" class="form-select">
+                        <label for="way" class="form-label">The way</label>
+                        <select name="way" id="way" class="form-select">
                             <option disabled selected>Choose the way</option>
-                            <option value="1">Eat In</option>
-                            <option value="2">Take Out</option>
-                            <option value="3">Delivery</option>
+                            <option value="Eat In">Eat In</option>
+                            <option value="Take Out">Take Out</option>
+                            <option value="Delivery">Delivery</option>
                         </select>
                     </div>
                 </div>
                 <div class="mt-3">
                     <label for="rate" class="form-label">Rate</label>
                     <br>
-                    <select name="rate" id="stars" class="form-select w-100">
-                        <option disabled selected>☆☆☆☆☆</option>
-                        <option value="1">★☆☆☆☆</option>
-                        <option value="2">★★☆☆☆</option>
-                        <option value="3">★★★☆☆</option>
-                        <option value="4">★★★★☆</option>
-                        <option value="5">★★★★★</option>
+                    <select name="rate" id="rate" class="form-select w-100">
+                        <option disabled selected>rating</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
                     </select>
                 </div>
                 <div class="mt-3">
                     <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control"></textarea>
+                    <textarea class="form-control" name="message" id="message"></textarea>
                 </div>
                 <div class="input-group mt-3 mb-3">
                     <div class="input-group-prepend">
@@ -141,13 +158,12 @@ $review = new Review();
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="">Posted Date</span>
                             </div>
-                            <input type="date" class="form-control" id="">
+                            <input type="date" class="form-control" name="date" id="date">
                         </div>
                     </div>
 
                 </div>
-                <input type="submit" value="POST" name="post" id="post"
-                    class="btn btn-block btn-warning text-light mt-3 w-100">
+                <input type="submit" value="POST" name="post" id="post" class="btn btn-block btn-warning text-light mt-3 w-100">
             </form>
         </div>
 

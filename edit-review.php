@@ -1,3 +1,31 @@
+<?php
+
+include 'class/user.php';
+
+$user = new User($_SESSION["account_id"]);
+
+$account_id = $user->getAccountID();
+$username = $user->getUsername();
+
+include 'class/restaurant.php';
+$restaurant = new Restaurant();
+
+include 'class/review.php';
+
+$review_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
+
+$review = new Review($review_id);
+
+$rest_id = $review->getRestID();
+$rest_name = $review->getRestName();
+$menu_title = $review->getMenuTitle();
+$way = $review->getWay();
+$rating = $review->getRating();
+$message = $review->getMessage();
+$date_posted = $review->getDatePosted();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,9 +48,9 @@
 </head>
 
 <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 </style>
 
 <body>
@@ -30,16 +58,14 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="#!">EATSTORIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php">{username}</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">LOGOUT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="review-top-user.php">Reviews</a></li>
+                    <li class="nav-item"><a class="nav-link" href="review-top-user.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?> </a></li>
+                    <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
         </div>
@@ -60,36 +86,76 @@
             </div>
         </div>
     </header>
-    
+
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5">
-            <form action="" method="POST">
-                <div class="mt-3">
-                    <label for="restname" class="form-label">Restaurant Name</label>
-                    <br>
-                    <select name="restname" id="restname" class="form-select">
-                        <option disabled selected>Choose Restaurant</option>
-                    </select>
+            <div class="row mt-5">
+                <div class="col-6 mx-auto">
+                    <?php
+                    if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                        //Input
+                        $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                        $message = $_SESSION["message"];
+
+                        //Delete session variables
+                        unset($_SESSION["success"]);
+                        unset($_SESSION["message"]);
+                    ?>
+
+                        <div class="alert alert-<?php echo $class; ?>" role="alert">
+                            <?php echo $message; ?>
+                        </div>
+                    <?php
+                    }
+                    ?>
                 </div>
-                <div class="mt-3">
-                    <label for="menu" class="form-label">Menu</label>
-                    <input type="text" name="menu" id="" class="form-control">
+            </div>
+            <form action="action/edit-review.php" method="POST">
+                <input type="id" name="review_id" value="<?php echo $review_id; ?>" hidden>
+                <div class="row">
+                    <div class="col-6 mt-3">
+                        <label for="restname" class="form-label">Restaurant Name</label>
+                        <br>
+                        <select name="restname" id="restname" class="form-select">
+                            <?php
+                            $restaurant->displayRestNameAsOptions($rest_id);
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-6 mt-3">
+                        <label for="rating" class="form-label">Rate</label>
+                        <br>
+                        <select name="rating" id="rating" class="form-select w-100">
+                            <option disable>Select rating</option>
+                            <?php for ($counter = 1; $counter <= 5; $counter++) {
+                                if ($counter == $rating) {
+                                    echo "<option value='$counter' selected>$counter</option>";
+                                } else {
+                                    echo "<option value='$counter'>$counter</option>";
+                                }
+                            } ?>
+                        </select>
+                    </div>
                 </div>
-                <div class="mt-3">
-                    <label for="rate" class="form-label">Rate</label>
-                    <br>
-                    <select name="rate" id="stars" class="form-select w-100">
-                        <option disabled selected>☆☆☆☆☆</option>
-                        <option value="1">★☆☆☆☆</option>
-                        <option value="2">★★☆☆☆</option>
-                        <option value="3">★★★☆☆</option>
-                        <option value="4">★★★★☆</option>
-                        <option value="5">★★★★★</option>
-                    </select>
+                <div class="row">
+                    <div class="col-6 mt-3">
+                        <label for="menu" class="form-label">Menu</label>
+                        <input type="text" name="menu" value="<?php echo $menu_title; ?>" class="form-control">
+                    </div>
+                    <div class="col-6 mt-3">
+                        <label for="way" class="form-label">The way</label>
+                        <select name="way" id="way" class="form-select">
+                            <option disable>Choose the way</option>
+                            <option value="Eat In">Eat In</option>
+                            <option value="Take Out">Take Out</option>
+                            <option value="Delivery">Delivery</option>
+                        </select>
+                    </div>
                 </div>
+
                 <div class="mt-3">
                     <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control"></textarea>
+                    <textarea class="form-control" name="message"><?php echo $message; ?></textarea>
                 </div>
                 <div class="input-group mt-3 mb-3">
                     <div class="input-group-prepend">
@@ -101,17 +167,17 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-6 text-center">
-                        Username
+                        Username: <?php echo "$username"; ?>
                     </div>
                     <div class="col-6">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                              <span class="input-group-text" id="">Posted Date</span>
+                                <span class="input-group-text">Posted Date</span>
                             </div>
-                            <input type="date" class="form-control" id="">
-                          </div>
+                            <input type="date" class="form-control" name="date_posted" value="<?php echo $date_posted; ?>">
+                        </div>
                     </div>
-                    
+
                 </div>
                 <div class="row">
                     <div class="col-6"></div>
@@ -119,15 +185,14 @@
                         <input type="submit" value="EDIT" name="edit" id="edit" class="btn btn-block btn-info text-light mt-3 w-100">
                     </div>
                     <div class="col-2">
-                        <input type="submit" value="DELETE" name="delete" id="delete"
-                            class="btn btn-block btn-danger text-light mt-3 w-100">
+                        <a href="#">Delete</a>
                     </div>
                 </div>
             </form>
         </div>
-        
+
     </section>
-    
+
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container px-5">

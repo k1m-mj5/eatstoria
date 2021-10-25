@@ -1,11 +1,19 @@
 <?php
 
 include 'class/user.php';
+
 $user = new User($_SESSION["account_id"]);
+
 $account_id = $user->getAccountID();
-$rest_username = $user->getRestUsername();
+$username = $user->getUsername();
+$email = $user->getEmail();
+
+include 'class/review.php';
+
+$review = new Review();
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,10 +49,10 @@ $rest_username = $user->getRestUsername();
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index-owner.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="review-top.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?></a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?> </a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
@@ -90,40 +98,15 @@ $rest_username = $user->getRestUsername();
                     ?>
                 </div>
             </div>
-            <form action="action/add-restaurant.php" method="POST">
-                <div class="mt-3">
-                    <label for="restname" class="form-label">Restaurant Name</label>
-                    <input type="text" name="restname" id="" class="form-control">
-                </div>
-                <div class="mt-3">
-                    <label for="description" class="form-label">Description</label>
-                    <input type="text" name="description" id="" class="form-control">
-                </div>
-                <div class="mt-3">
-                    <label for="location" class="form-label">Location</label>
-                    <input type="text" name="location" id="" class="form-control">
-                </div>
-                <div class="mt-3">
-                    <label for="openinghour" class="form-label">Opening hours</label>
-                    <input type="text" name="openinghour" id="" class="form-control">
-                </div>
-                <div class="mt-3">
-                    <label for="telephone" class="form-label">Telephone</label>
-                    <input type="text" name="telephone" id="" class="form-control">
-                </div>
-
-                <div class="input-group mt-3 mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Image Upload</span>
-                    </div>
-                    <div class="rest-file">
-                        <input type="file" class="custom-file-input" id="">
-                    </div>
-                </div>
-                <input type="submit" value="Add Restaurant" name="addrest" id="addrest" class="btn btn-block btn-info text-light mt-3 w-100">
-            </form>
+            <div class="d-flex align-items-end flex-column mt-3 mb-3">
+                <a href="add-review.php" class="btn btn-block btn-outline-warning">Add Review</a>
+            </div>
+            <div class="mb-5 mt-5">
+                <?php
+                $review->displayReviewOnTop();
+                ?>
+            </div>
         </div>
-
     </section>
 
     <!-- Footer-->
