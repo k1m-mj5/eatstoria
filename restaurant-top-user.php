@@ -6,11 +6,10 @@ $user = new User($_SESSION["account_id"]);
 
 $account_id = $user->getAccountID();
 $username = $user->getUsername();
-$email = $user->getEmail();
 
-include 'class/review.php';
+include 'class/restaurant.php';
 
-$review = new Review();
+$restaurant = new Restaurant();
 
 ?>
 <!DOCTYPE html>
@@ -35,9 +34,9 @@ $review = new Review();
 </head>
 
 <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 </style>
 
 <body>
@@ -45,14 +44,12 @@ $review = new Review();
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="#!">EATSTORIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top-user.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="review-top-user.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-top-user.php">Restaurants</a></li>
                     <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?> </a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
@@ -75,109 +72,17 @@ $review = new Review();
             </div>
         </div>
     </header>
-    
+
     <!-- Restaurant preview section-->
     <section class="bg-light py-5 border-bottom">
         <div class="container px-5 my-5">
             <div class="text-center mb-5">
                 <h2 class="fw-bolder">Restaurants</h2>
             </div>
-            <div class="row gx-5 justify-content-center">
-                <div class="col-lg-6 col-xl-4">
-                    <div class="card mb-5 mb-xl-0">
-                        <div class="card-body p-5">
-                            <div class="small text-uppercase fw-bold text-muted">KOREAN</div>
-                            <div class="mb-3">
-                                <span class="display-6 fw-bold">Seoul Soul</span>
-                                <img src="https://toppng.com/uploads/preview/square-115527604300vrdl6wlrv.png"
-                                    width="200" height="150" alt="">
-                            </div>
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-2">
-                                    <i class="fas fa-utensils"></i>
-                                    <strong>Samgyeopsal</strong>
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Eat in
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Take Out
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Delivery
-                                </li>
-                            </ul>
-                            <div class="d-grid"><a class="btn btn-outline-primary" href="#!">More Information</a></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 col-xl-4">
-                    <div class="card mb-5 mb-xl-0">
-                        <div class="card-body p-5">
-                            <div class="small text-uppercase fw-bold text-muted">JAPANESE</div>
-                            <div class="mb-3">
-                                <span class="display-6 fw-bold">Asuka</span>
-                                <img src="https://toppng.com/uploads/preview/square-115527604300vrdl6wlrv.png"
-                                    width="200" height="150" alt="">
-                            </div>
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-2">
-                                    <i class="fas fa-utensils"></i>
-                                    <strong>Sushi</strong>
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Eat in
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Take Out
-                                </li>
-                                <li class="text-muted">
-                                    <i class="bi bi-x"></i>
-                                    Delivery
-                                </li>
-                            </ul>
-                            <div class="d-grid"><a class="btn btn-outline-primary" href="#!">More Information</a></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 col-xl-4">
-                    <div class="card mb-5 mb-xl-0">
-                        <div class="card-body p-5">
-                            <div class="small text-uppercase fw-bold text-muted">WESTERN</div>
-                            <div class="mb-3">
-                                <span class="display-6 fw-bold">Mr. Steakhouse</span>
-                                <img src="https://toppng.com/uploads/preview/square-115527604300vrdl6wlrv.png"
-                                    width="200" height="150" alt="">
-                            </div>
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-2">
-                                    <i class="fas fa-utensils"></i>
-                                    <strong>T-bone steak</strong>
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Eat in
-                                </li>
-                                <li class="text-muted mb-2">
-                                    <i class="bi bi-x"></i>
-                                    Take Out
-                                </li>
-                                <li class="text-muted">
-                                    <i class="bi bi-x"></i>
-                                    Delivery
-                                </li>
-                            </ul>
-                            <div class="d-grid"><a class="btn btn-outline-primary" href="#!">More Information</a></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="mb-5 mt-5">
+                <?php
+                    $restaurant->displayRestOnTop();
+                ?>
             </div>
         </div>
     </section>

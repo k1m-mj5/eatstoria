@@ -123,5 +123,38 @@ class Menu extends Database{
         }
     }
 
+    public function displayMenuAsOptions($rest_id=NULL){
+        $sql = "SELECT * FROM menu WHERE rest_id=$rest_id";
+        $result = $this->conn->query($sql);
+
+        if($result && $result->num_rows>0){
+            echo "<option disabled selected>Select Menu</option>";
+            
+            while($row = $result->fetch_assoc()){
+                echo "<option value='".$row["rest_id"]."'>".$row["menu_title"]."</option>";
+            }
+        } else {
+            echo "<option disabled selected>No Menu to choose from</option>";
+        }
+    }
+
+    public function displayMenuOnDetailsUser($rest_id=NULL){
+        $sql = "SELECT menu_id, menu_title, price, description FROM menu WHERE rest_id=$rest_id;";
+
+        $result = $this->conn->query($sql);
+
+        if($result && $result->num_rows>0){
+            while($row = $result->fetch_assoc()){
+                echo "<tr>
+                <td>".$row["menu_title"]."</td> 
+                <td>".$row["price"]."</td>
+                 <td>".$row["description"]."</td>
+                 <td><a href='#' class='btn btn-block btn-outline-info'>View Picture</a></td>
+                 </tr>";
+            } 
+        } else {
+        echo "No data";
+        }
+    }
 }
 ?>

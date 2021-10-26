@@ -15,7 +15,7 @@ class Restaurant extends Database{
     public function __construct($rest_id=NULL){
         $this->conn = $this->connect();
         if($rest_id != NULL){
-            $sql = "SELECT rest_id, rest_name, description, location, telephone, open_hour, accounts.account_id
+            $sql = "SELECT rest_id, rest_name, restaurant.description, location, telephone, open_hour, accounts.account_id
                     FROM restaurant INNER JOIN accounts ON restaurant.account_id=accounts.account_id
                     WHERE rest_id = $rest_id";
 
@@ -157,4 +157,29 @@ class Restaurant extends Database{
         }
     }
     
+    public function displayRestOnTop($rest_id=NULL){
+        $sql = "SELECT restaurant.rest_id, restaurant.rest_name, restaurant.description FROM restaurant";
+        $result = $this->conn->query($sql);
+
+        if($result && $result->num_rows>0){
+            while($row = $result->fetch_assoc()){
+                echo "<div class='row'>
+                        <div class='col-sm-6'>
+                            <div class='card mr-3 mb-3 p-3'>
+                                <div class='card-body'>
+                                <h2 class='h4 fw-bolder'>".$row["rest_name"]."</h2>
+                                <p class='text-muted'>".$row["description"]."</p>
+                                <a class='text-decoration-none' href='restaurant-details-user.php?id=".$row["rest_id"]."'>
+                                Check Details <i class='bi bi-arrow-right'></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>";
+            }
+        } else {
+            echo "No data";
+        }
+    }
+
 }

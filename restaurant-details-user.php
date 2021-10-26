@@ -5,8 +5,23 @@ include 'class/user.php';
 $user = new User($_SESSION["account_id"]);
 
 $account_id = $user->getAccountID();
-$rest_username = $user->getRestUsername();
-$email = $user->getEmail();
+$username = $user->getUsername();
+
+include 'class/restaurant.php';
+
+$rest_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
+
+$restaurant = new Restaurant($rest_id);
+$rest_id = $restaurant->getRestID();
+$rest_name = $restaurant->getRestname();
+$description = $restaurant->getDescription();
+$location = $restaurant->getLocation();
+$telephone = $restaurant->getTelephone();
+$open_hour = $restaurant->getOpenhour();
+
+include 'class/menu.php';
+
+$menu = new Menu();
 
 ?>
 
@@ -46,9 +61,9 @@ $email = $user->getEmail();
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-details.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-owner.php"><?php echo "$rest_username"; ?></a></li>
+                    <li class="nav-item"><a class="nav-link" href="review-top-user.php">Reviews</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-top-user.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
@@ -95,17 +110,24 @@ $email = $user->getEmail();
                 </div>
             </div>
             <div class="card mx-auto">
+                <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
                 <img class="card-img-bottom" src="..." alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title">Restaurant Name</h5>
-                    <p class="card-text">Description</p>
-                    <a href="#">Reviews</a>
+                    <h5 class="card-title"><?php echo $rest_name; ?></h5>
+                    <p class="card-text"><?php echo $description; ?></p>
+                    <a class="text-none-decoration" href="#">Reviews</a>
                     <p>Retaurant Information</p>
                     <ul>
-                        <li>Location</li>
-                        <li>Opening hours</li>
-                        <li>Telephone</li>
+                        <li>Location: <?php echo $location; ?></li>
+                        <li>Opening hours: <?php echo $open_hour; ?></li>
+                        <li>Telephone: <?php echo $telephone; ?></li>
                     </ul>
+                    <div class="row">
+                        <div class="col-9"></div>
+                        <div class="col-3">
+                            <a href="add-order.php?id=<?php echo $rest_id ?>" class="btn btn-warning w-100"> ORDER</a>
+                        </div>
+                    </div>
                     <table class="table table-striped mt-3">
                         <thead>
                             <tr>
@@ -113,18 +135,13 @@ $email = $user->getEmail();
                                 <th scope="col">Price</th>
                                 <th scope="col">Description</th>
                                 <th scope="col"></th>
-                                <th scope="col"></th>
                             </tr>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">Menu1</th>
-                                <td>price1</td>
-                                <td>descrip1</td>
-                                <td><button type="button" class="btn btn-outline-info">View Picture</button></td>
-                                <td><button type="button" class="btn btn-warning text-light">ORDER HERE</button></td>
-                            </tr>
+                            <?php
+                                $menu->displayMenuOnDetailsUser($rest_id);
+                            ?>
                         </tbody>
                     </table>
                 </div>

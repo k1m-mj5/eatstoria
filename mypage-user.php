@@ -8,6 +8,14 @@ $account_id = $user->getAccountID();
 $username = $user->getUsername();
 $email = $user->getEmail();
 
+include 'class/order.php';
+$order = new Order();
+
+$order_id = $order->getOrderID();
+$rest_id = $order->getRestID();
+$menu_id = $order->getMenuID();
+$order_date = $order->getOrderdate();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -106,6 +114,9 @@ $email = $user->getEmail();
 
                 <div>
                     <h4 class="mt-5">My Order</h4>
+                    <?php
+                    $order->displayOrderOnMyUser($account_id);
+                    ?>
                 </div>
             </form>
         </div>
