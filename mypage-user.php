@@ -79,7 +79,7 @@ $order_date = $order->getOrderdate();
     </header>
 
     <section class="py-5 border-bottom" id="features">
-        <div class="container px-5 my-5 w-50">
+        <div class="container px-5 my-5 w-75">
             <div>
                 <?php
                 if (isset($_SESSION["success"]) && ($_SESSION["message"])) {
@@ -113,10 +113,23 @@ $order_date = $order->getOrderdate();
                 </div>
 
                 <div>
-                    <h4 class="mt-5">My Order</h4>
-                    <?php
-                    $order->displayOrderOnMyUser($account_id);
-                    ?>
+                    <h4 class="mt-5 mb-3">My Order</h4>
+                    <table class="table table-striped text-center mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Restaurant</th>
+                                <th scope="col">Menu</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $order->displayOrderOnMyUser($account_id);
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
             </form>
         </div>

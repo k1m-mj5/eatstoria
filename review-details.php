@@ -22,6 +22,11 @@ $rating = $review->getRating();
 $message = $review->getMessage();
 $date_posted = $review->getDatePosted();
 
+$reviewer = new User($review->getAccountID());
+
+$account_id = $reviewer->getAccountID();
+$reviewer_username = $reviewer->getUsername();
+
 ?>
 
 <!DOCTYPE html>
@@ -140,7 +145,7 @@ $date_posted = $review->getDatePosted();
                         <p class="card-text">Way: <?php echo "$way"; ?></p>
                         <p class="card-text">Rating: <?php echo "$rating"; ?></p>
                         <p class="card-text"><?php echo "$message"; ?></p>
-                        <p class="card-text"><small class="text-muted"><?php echo "$username"; ?> \ <?php echo "$date_posted"; ?></small></p>
+                        <p class="card-text"><small class="text-muted"><?php echo "$reviewer_username"; ?> \ <?php echo "$date_posted"; ?></small></p>
                     </div>
                     <img class="card-img-bottom" src="..." alt="Card image cap">
                 </div>

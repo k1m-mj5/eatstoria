@@ -5,13 +5,18 @@ include 'class/user.php';
 $user = new User($_SESSION["account_id"]);
 
 $account_id = $user->getAccountID();
-$username = $user->getUsername();
+$rest_username = $user->getRestUsername();
 
 include 'class/restaurant.php';
+$rest_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
+$restaurant = new Restaurant($rest_id);
+$rest_name = $restaurant->getRestname();
 
-$restaurant = new Restaurant();
+include 'class/order.php';
+$order = new Order();
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,14 +42,6 @@ $restaurant = new Restaurant();
     body {
         font-family: 'Roboto', sans-serif;
     }
-
-    .cards-box {
-        display: flex;
-        justify-content: space-between;
-        margin: 0 70px;
-        margin-top: 65px;
-        flex-wrap: wrap;
-    }
 </style>
 
 <body>
@@ -55,10 +52,10 @@ $restaurant = new Restaurant();
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="review-top-user.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-top-user.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?> </a></li>
+                    <li class="nav-item"><a class="nav-link" href="index-owner.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
+                    <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
@@ -81,21 +78,61 @@ $restaurant = new Restaurant();
         </div>
     </header>
 
-    <!-- Restaurant preview section-->
-    <section class="bg-light py-5 border-bottom">
+    <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5">
-            <div class="text-center mb-5">
-                <h2 class="fw-bolder">Restaurants</h2>
-            </div>
-            <div class="card-colums" id="all_posting">
-                <div id="card-box" class="cards-box">
+            <div class="row mt-5">
+                <div class="col-6 mx-auto">
                     <?php
-                    $restaurant->displayRestOnTop();
+                    if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+
+                        $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                        $message = $_SESSION["message"];
+
+                        unset($_SESSION["success"]);
+                        unset($_SESSION["message"]);
+                    ?>
+
+                        <div class="alert alert-<?php echo $class; ?>" role="alert">
+                            <?php echo $message; ?>
+                        </div>
+                    <?php
+                    }
                     ?>
                 </div>
             </div>
+            <form action="" method="POST">
+                <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
+                <div class="row">
+                    <h4 class="text-center"><?php echo $rest_name; ?> <span class="text-muted">order page</span></h4>
+                </div>
+                <div class="mt-3">
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">O.ID</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Menu</th>
+                                <th scope="col">QTY</th>
+                                <th scope="col">Way</th>
+                                <th scope="col">Contact Num</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $order->displayOrderOnOwnerpage($rest_id)
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+
         </div>
+
     </section>
+
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container px-5">

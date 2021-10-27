@@ -9,10 +9,12 @@ $username = $user->getUsername();
 $email = $user->getEmail();
 
 include 'class/restaurant.php';
-$restaurant = new Restaurant();
+$rest_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
+$restaurant = new Restaurant($rest_id);
+$rest_name = $restaurant->getRestname($rest_id);
 
-include 'class/review.php';
-$review = new Review();
+include 'class/menu.php';
+$menu = new Menu();
 
 ?>
 
@@ -101,19 +103,22 @@ $review = new Review();
                 </div>
             </div>
             <form action="action/add-review.php" method="POST">
+                <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
                 <div class="mt-3">
-                    <label for="restname" class="form-label">Restaurant Name</label>
-                    <br>
-                    <select name="restname" id="restname" class="form-select">
-                        <?php
-                        $restaurant->displayRestNameAsOptions();
-                        ?>
-                    </select>
+                    <div class="row">
+                        <h5 class="text-center text-muted">Leave Review</h5>
+                        <h4 class="text-center mb-3"><?php echo $rest_name; ?></h4>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-6 mt-3">
                         <label for="menu" class="form-label">Menu</label>
-                        <input type="text" name="menu" id="" class="form-control">
+                        <br>
+                        <?php
+                        echo "<select class='form-select' name='menu'>";
+                        $menu->displayMenuAsOptions($rest_id, $menu_id);
+                        echo "</select>";
+                        ?>
                     </div>
                     <div class="col-6 mt-3">
                         <label for="way" class="form-label">The way</label>
@@ -158,7 +163,7 @@ $review = new Review();
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="">Posted Date</span>
                             </div>
-                            <input type="date" class="form-control" name="date" id="date">
+                            <input type="date" name="date" class="form-control" id="currentDate" min="<?= date('Y-m-d'); ?>">
                         </div>
                     </div>
 

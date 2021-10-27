@@ -1,26 +1,32 @@
 <?php
 
 include 'class/user.php';
-
 $user = new User($_SESSION["account_id"]);
 
 $account_id = $user->getAccountID();
 $username = $user->getUsername();
 
+include 'class/order.php';
+$order_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
+
+$order = new Order($order_id);
+
+$rest_id = $order->getRestID();
+
+$menu_id = $order->getMenuID();
+$menu_title = $order->getMenuTitle();
+$quantity = $order->getQuantity();
+$contact_num = $order->getContactNum();
+$order_date = $order->getOrderdate();
+$order_time = $order->getOrdertime();
+$way = $order->getWay();
+$message = $order->getMessage();
+
 include 'class/restaurant.php';
-
-$rest_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
-
 $restaurant = new Restaurant($rest_id);
-$rest_id = $restaurant->getRestID();
-$rest_name = $restaurant->getRestname();
-$description = $restaurant->getDescription();
-$location = $restaurant->getLocation();
-$telephone = $restaurant->getTelephone();
-$open_hour = $restaurant->getOpenhour();
+$rest_name = $restaurant->getRestname($rest_id);
 
 include 'class/menu.php';
-
 $menu = new Menu();
 
 ?>
@@ -63,7 +69,7 @@ $menu = new Menu();
                     <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top-user.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-top-user.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?></a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?> </a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
@@ -87,16 +93,15 @@ $menu = new Menu();
     </header>
 
     <section class="py-5 border-bottom" id="features">
-        <div class="container px-5 my-5">
+        <div class="container px-5 my-5 w-50">
             <div class="row mt-5">
                 <div class="col-6 mx-auto">
                     <?php
                     if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
-                        //Input
+
                         $class = ($_SESSION["success"] == 1) ? "success" : "danger";
                         $message = $_SESSION["message"];
 
-                        //Delete session variables
                         unset($_SESSION["success"]);
                         unset($_SESSION["message"]);
                     ?>
@@ -109,51 +114,69 @@ $menu = new Menu();
                     ?>
                 </div>
             </div>
-            <div class="card mx-auto">
+            <form action="action/edit-order.php" method="POST">
+                <input type="id" name="order_id" value="<?php echo $order_id; ?>" hidden>
                 <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
-                <img class="card-img-bottom" src="..." alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title"><?php echo $rest_name; ?></h5>
-                    <p class="card-text"><?php echo $description; ?></p>
-                    <div class="row">
-                    <div class="col-4"></div>
-                    <div class="col-4">
-                            <a href="add-review.php?id=<?php echo $rest_id ?>" class="btn btn-info w-100"> Creat Review</a>
-                    </div>
-                    <div class="col-4"></div>
-                    </div>
-                    <p>Retaurant Information</p>
-                    <ul>
-                        <li>Location: <?php echo $location; ?></li>
-                        <li>Opening hours: <?php echo $open_hour; ?></li>
-                        <li>Telephone: <?php echo $telephone; ?></li>
-                    </ul>
-                    <div class="row">
-                        <div class="col-9"></div>
-                        <div class="col-3">
-                            <a href="add-order.php?id=<?php echo $rest_id ?>" class="btn btn-warning w-100"> ORDER</a>
-                        </div>
-                    </div>
-                    <table class="table table-striped mt-3">
-                        <thead>
-                            <tr>
-                                <th scope="col">Menu</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Description</th>
-                                <th scope="col"></th>
-                            </tr>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                                $menu->displayMenuOnDetailsUser($rest_id);
-                            ?>
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <h5 class="text-center text-muted">Order Details</h5>
+                    <h4 class="text-center mt-5 mb-3"><?php echo $rest_name; ?></h4>
                 </div>
-            </div>
-        </div>
+                <div class="row mt-3">
+                    <div class="col-6" id="menu">
+                        <label for="menu" class="form-label">Menu</label>
+                        <br>
+                        <?php
+                        echo "<select class='form-select' name='menu'>";
+                        $menu->displayMenuAsOptions($rest_id, $menu_id);
+                        echo "</select>";
+                        ?>
+                    </div>
+                    <div class="col-6">
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="number" name="quantity" value="<?php echo $quantity; ?>" class="form-control" min="1">
+                    </div>
+                </div>
+                <div class="mt-3 mb-5">
+                    <label for="contact" class="form-label">Contact Number</label>
+                    <input type="text" name="contact" value="<?php echo $contact_num; ?>" class="form-control">
+                </div>
+                <div class="mb-5">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="">Date</span>
+                        </div>
+                        <input type="date" name="date" class="form-control" value="<?php echo $order_date; ?>">
 
+                        <input type="time" name="time" class="form-control" value="<?php echo $order_time; ?>">
+                    </div>
+                </div>
+                <div class=" row mt-3">
+                    <div class="col-6">
+                        <select name="way" id="way" class="form-select">
+                            <option disabled selected>The way</option>
+                            <option value="Eat In" <?php if ("Eat In" == $way) {
+                                                        echo "selected";
+                                                    } ?>>Eat In</option>
+                            <option value="Take Out" <?php if ("Take Out" == $way) {
+                                                            echo "selected";
+                                                        } ?>>Take Out</option>
+                            <option value="Delivery" <?php if ("Delivery" == $way) {
+                                                            echo "selected";
+                                                        } ?>>Delivery</option>
+                        </select>
+                    </div>
+                    <div class="col-6 text-center">
+                        Username: <?php echo "$username"; ?>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <label for="message" class="form-label mt-5">Message <span class="text-muted">(Leave your address in case of delivery)</span></label>
+                    <br>
+                    <textarea name="message" cols="70" rows="5"><?php echo $message; ?></textarea>
+                </div>
+                <input type="submit" value="EDIT" name="edit" id="edit" class="btn btn-block btn-info text-light mt-3 w-100">
+            </form>
+        </div>
     </section>
 
     <!-- Footer-->
@@ -163,14 +186,15 @@ $menu = new Menu();
         </div>
     </footer>
     <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script> -->
     <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
+    <!-- <script src="js/scripts.js"></script> -->
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <!-- * *                               SB Forms JS                               * *-->
     <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    <!-- <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script> -->
+
 </body>
 
 </html>

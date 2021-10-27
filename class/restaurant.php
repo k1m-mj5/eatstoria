@@ -90,7 +90,7 @@ class Restaurant extends Database{
                 <td>".$row["rest_id"]."</td>
                 <td>".$row["rest_name"]."</td>
                 <td><a href='restaurant-details-owner.php?id=".$row["rest_id"]."' class='btn btn-block btn-outline-success mt-3'>Details</a></td>
-                <td><a href='order.php' class='btn btn-block btn-outline-success mt-3'>Check Order</a></td>
+                <td><a href='order-ownerpage.php?id=".$row["rest_id"]."' class='btn btn-block btn-outline-success mt-3'>Check Order</a></td>
                 </tr>";
             }
         } else {
@@ -163,17 +163,14 @@ class Restaurant extends Database{
 
         if($result && $result->num_rows>0){
             while($row = $result->fetch_assoc()){
-                echo "<div class='row'>
-                        <div class='col-sm-6'>
-                            <div class='card mr-3 mb-3 p-3'>
-                                <div class='card-body'>
-                                <h2 class='h4 fw-bolder'>".$row["rest_name"]."</h2>
-                                <p class='text-muted'>".$row["description"]."</p>
-                                <a class='text-decoration-none' href='restaurant-details-user.php?id=".$row["rest_id"]."'>
-                                Check Details <i class='bi bi-arrow-right'></i>
-                                </a>
-                                </div>
-                            </div>
+                echo "<div class='card w-25 ms-1 mb-3 p-3'>
+                        <div class='card-body'>
+                        <img class='card-img-top img-fluid' src='https://cdn.dribbble.com/users/58386/screenshots/6860641/eat24_restaurants.jpg?compress=1&resize=400x300'>
+                            <h2 class='h4 fw-bolder mt-2'>".$row["rest_name"]."</h2>
+                            <p class='text-muted'>".$row["description"]."</p>
+                            <a class='text-decoration-none' href='restaurant-details-user.php?id=".$row["rest_id"]."'>
+                            Check Details <i class='bi bi-arrow-right'></i>
+                            </a>
                         </div>
                     </div>";
             }

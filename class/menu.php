@@ -123,7 +123,7 @@ class Menu extends Database{
         }
     }
 
-    public function displayMenuAsOptions($rest_id=NULL){
+    public function displayMenuAsOptions($rest_id=NULL, $menu_id=NULL){
         $sql = "SELECT * FROM menu WHERE rest_id=$rest_id";
         $result = $this->conn->query($sql);
 
@@ -131,7 +131,11 @@ class Menu extends Database{
             echo "<option disabled selected>Select Menu</option>";
             
             while($row = $result->fetch_assoc()){
-                echo "<option value='".$row["rest_id"]."'>".$row["menu_title"]."</option>";
+                if($menu_id == $row["menu_id"]){
+                    echo "<option value='".$row["menu_id"]."' selected>".$row["menu_title"]."</option>";    
+                } else {
+                echo "<option value='".$row["menu_id"]."'>".$row["menu_title"]."</option>";
+                }
             }
         } else {
             echo "<option disabled selected>No Menu to choose from</option>";

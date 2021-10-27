@@ -16,11 +16,12 @@ class Order extends Database{
     private $order_time;
     private $account_id;
     private $message;
+    private $username;
 
     public function __construct($order_id=NULL){
         $this->conn = $this->connect();
         if($order_id != NULL){
-            $sql = "SELECT order_id, restaurant.rest_id, restaurant.rest_name, menu.menu_id, menu.menu_title, quantity, contact_num, orders.way, order_date, order_time, accounts.account_id, orders.message
+            $sql = "SELECT order_id, restaurant.rest_id, restaurant.rest_name, menu.menu_id, menu.menu_title, quantity, contact_num, orders.way, order_date, order_time, accounts.account_id, accounts.username, orders.message
                     FROM orders
                     INNER JOIN accounts ON accounts.account_id = orders.account_id
                     INNER JOIN restaurant ON restaurant.rest_id = orders.rest_id
@@ -82,10 +83,14 @@ class Order extends Database{
     public function getMessage(){
         return $this->message;
     }
+
+    public function getUsername(){
+        return $this->username;
+    }
     
     public function addOrder($rest_id, $menu_id, $quantity, $way, $contact_num, $order_date, $order_time, $account_id, $message){
         $sql = "INSERT INTO orders(rest_id, menu_id, quantity, contact_num, way, order_date, order_time, account_id, message)
-                VALUES ($rest_id, $menu_id, '$quantity', '$way', '$contact_num', '$order_date', '$order_time', $account_id, '$message')";
+                VALUES ($rest_id, $menu_id, '$quantity', '$contact_num', '$way', '$order_date', '$order_time', $account_id, '$message')";
         //echo $sql;
         if($this->conn->query($sql)){
             $order_id = $this->conn->insert_id;
@@ -105,20 +110,85 @@ class Order extends Database{
     public function displayOrderOnMyUser($account_id=NULL){
         $sql = "SELECT orders.order_id, orders.order_date, restaurant.rest_name, menu.menu_title FROM orders
                 INNER JOIN restaurant ON orders.rest_id = restaurant.rest_id
-                INNER JOIN menu ON orders.menu_id = menu.menu_id";
+                INNER JOIN menu ON orders.menu_id = menu.menu_id
+                WHERE orders.account_id=$account_id";
         
         $result = $this->conn->query($sql);
 
         if($result && $result->num_rows>0){
             while($row = $result->fetch_assoc()){
-                echo $row["order_date"];
-                echo $row["rest_name"];
-                echo $row["menu_title"];
+                echo "<tr>
+                <td>".$row["order_date"]."</td>
+                <td>".$row["rest_name"]."</td>
+                <td>".$row["menu_title"]."</td>
+                <td><a href='edit-order.php?id=".$row["order_id"]."' class='btn btn-block btn-warning text-light'>Check or Edit details</a></td>
+                 </tr>";
             }
         } else {
-            echo "No data";
+            echo "<tr>
+            <td></td>
+            <td>No data</td>
+            <td></td>
+            <td></td>
+             </tr>";
         }
     }
-} //Check function addOrder!!
+
+    public function EditOrder($order_id, $rest_id, $menu_id, $quantity, $way, $contact_num, $order_date, $order_time, $account_id, $message){
+        $sql = "UPDATE orders SET rest_id='$rest_id', menu_id='$menu_id', quantity='$quantity', way='$way', contact_num='$contact_num', order_date='$order_date', order_time='$order_time', message='$message', account_id=$account_id
+                WHERE orders.order_id=$order_id;";
+
+        if ($this->conn->query($sql)) {
+            $_SESSION["success"] = 1;
+            $_SESSION["message"] = "Successfully Updated.";
+            header("Location:../mypage-user.php?id=$account_id");
+            exit;
+        } else {
+            $_SESSION["success"] = 0;
+            $_SESSION["message"] = "Update failed. Please kinldy check again.";
+            header("Location:../edit-order.php?id=$order_id");
+            exit;
+        }
+    }
+
+    public function displayOrderOnOwnerpage($rest_id=NULL){
+        $sql = "SELECT * FROM orders
+                INNER JOIN restaurant ON orders.rest_id = restaurant.rest_id
+                INNER JOIN menu ON orders.menu_id = menu.menu_id
+                INNER JOIN accounts ON orders.account_id = accounts.account_id
+                WHERE orders.rest_id=$rest_id";
+        
+        $result = $this->conn->query($sql);
+
+        if($result && $result->num_rows>0) {
+            while ($row = $result->fetch_assoc()){
+                echo "<tr>
+                <td>".$row["order_id"]."</td>
+                <td>".$row["order_date"]."</td>
+                <td>".$row["order_time"]."</td>
+                <td>".$row["menu_title"]."</td>
+                <td>".$row["quantity"]."</td>
+                <td>".$row["way"]."</td>
+                <td>".$row["contact_num"]."</td>
+                <td>".$row["username"]."</td>
+                <td>".$row["message"]."</td>
+                </tr>";
+            }
+        } else {
+            echo "<tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>No data</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>";
+        }
+    }
+
+}
 
 ?>
