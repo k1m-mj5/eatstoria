@@ -7,9 +7,6 @@ $user = new User($_SESSION["account_id"]);
 $account_id = $user->getAccountID();
 $username = $user->getUsername();
 
-include 'class/restaurant.php';
-$restaurant = new Restaurant();
-
 include 'class/review.php';
 
 $review_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
@@ -17,12 +14,20 @@ $review_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
 $review = new Review($review_id);
 
 $rest_id = $review->getRestID();
-$rest_name = $review->getRestName();
+// $rest_name = $review->getRestName();
+$menu_id = $review->getMenuID();
 $menu_title = $review->getMenuTitle();
 $way = $review->getWay();
 $rating = $review->getRating();
 $message = $review->getMessage();
 $date_posted = $review->getDatePosted();
+
+include 'class/restaurant.php';
+$restaurant = new Restaurant($rest_id);
+$rest_name = $restaurant->getRestname($rest_id);
+
+include 'class/menu.php';
+$menu = new Menu();
 
 ?>
 
@@ -93,11 +98,10 @@ $date_posted = $review->getDatePosted();
                 <div class="col-6 mx-auto">
                     <?php
                     if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
-                        //Input
+
                         $class = ($_SESSION["success"] == 1) ? "success" : "danger";
                         $message = $_SESSION["message"];
 
-                        //Delete session variables
                         unset($_SESSION["success"]);
                         unset($_SESSION["message"]);
                     ?>
@@ -112,18 +116,25 @@ $date_posted = $review->getDatePosted();
             </div>
             <form action="action/edit-review.php" method="POST">
                 <input type="id" name="review_id" value="<?php echo $review_id; ?>" hidden>
-                <div class="row">
-                    <div class="col-6 mt-3">
-                        <label for="restname" class="form-label">Restaurant Name</label>
-                        <br>
-                        <select name="restname" id="restname" class="form-select">
-                            <?php
-                            $restaurant->displayRestNameAsOptions($rest_id);
-                            ?>
-                        </select>
+                <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
+                <div class="mt-3">
+                    <div class="row">
+                        <h5 class="text-center text-muted">Edit your Review</h5>
+                        <h4 class="text-center mb-3"><?php echo $rest_name; ?></h4>
                     </div>
-                    <div class="col-6 mt-3">
-                        <label for="rating" class="form-label">Rate</label>
+                </div>
+                <div class="row">
+                <div class="col-6" id="menu">
+                        <label for="menu" class="form-label">Menu</label>
+                        <br>
+                        <?php
+                        echo "<select class='form-select' name='menu'>";
+                        $menu->displayMenuAsOptions($rest_id, $menu_id);
+                        echo "</select>";
+                        ?>
+                    </div>
+                    <div class="col-6">
+                        <label for="rating" class="form-label">Rating</label>
                         <br>
                         <select name="rating" id="rating" class="form-select w-100">
                             <option disable>Select rating</option>
@@ -138,21 +149,23 @@ $date_posted = $review->getDatePosted();
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6 mt-3">
-                        <label for="menu" class="form-label">Menu</label>
-                        <input type="text" name="menu" value="<?php echo $menu_title; ?>" class="form-control">
-                    </div>
+
                     <div class="col-6 mt-3">
                         <label for="way" class="form-label">The way</label>
                         <select name="way" id="way" class="form-select">
-                            <option disable>Choose the way</option>
-                            <option value="Eat In">Eat In</option>
-                            <option value="Take Out">Take Out</option>
-                            <option value="Delivery">Delivery</option>
+                            <option disable>The way</option>
+                            <option value="Eat In" <?php if ("Eat In" == $way) {
+                                                        echo "selected";
+                                                    } ?>>Eat In</option>
+                            <option value="Take Out" <?php if ("Take Out" == $way) {
+                                                            echo "selected";
+                                                        } ?>>Take Out</option>
+                            <option value="Delivery" <?php if ("Delivery" == $way) {
+                                                            echo "selected";
+                                                        } ?>>Delivery</option>
                         </select>
                     </div>
                 </div>
-
                 <div class="mt-3">
                     <label for="message" class="form-label">Message</label>
                     <textarea class="form-control" name="message"><?php echo $message; ?></textarea>
@@ -184,9 +197,7 @@ $date_posted = $review->getDatePosted();
                     <div class="col-4">
                         <input type="submit" value="EDIT" name="edit" id="edit" class="btn btn-block btn-info text-light mt-3 w-100">
                     </div>
-                    <div class="col-2">
-                        <a href="#">Delete</a>
-                    </div>
+                    <div class="col-2"></div>
                 </div>
             </form>
         </div>

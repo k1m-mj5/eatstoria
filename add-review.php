@@ -85,11 +85,10 @@ $menu = new Menu();
                 <div class="col-6 mx-auto">
                     <?php
                     if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
-                        //Input
+
                         $class = ($_SESSION["success"] == 1) ? "success" : "danger";
                         $message = $_SESSION["message"];
 
-                        //Delete session variables
                         unset($_SESSION["success"]);
                         unset($_SESSION["message"]);
                     ?>
@@ -106,7 +105,7 @@ $menu = new Menu();
                 <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
                 <div class="mt-3">
                     <div class="row">
-                        <h5 class="text-center text-muted">Leave Review</h5>
+                        <h5 class="text-center text-muted">Leave your Review</h5>
                         <h4 class="text-center mb-3"><?php echo $rest_name; ?></h4>
                     </div>
                 </div>
@@ -121,6 +120,20 @@ $menu = new Menu();
                         ?>
                     </div>
                     <div class="col-6 mt-3">
+                    <label for="rate" class="form-label">Rating</label>
+                    <br>
+                    <select name="rate" id="rate" class="form-select w-100">
+                        <option disabled selected>Rating</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                <div class="col-6 mt-3">
                         <label for="way" class="form-label">The way</label>
                         <select name="way" id="way" class="form-select">
                             <option disabled selected>Choose the way</option>
@@ -129,18 +142,7 @@ $menu = new Menu();
                             <option value="Delivery">Delivery</option>
                         </select>
                     </div>
-                </div>
-                <div class="mt-3">
-                    <label for="rate" class="form-label">Rate</label>
-                    <br>
-                    <select name="rate" id="rate" class="form-select w-100">
-                        <option disabled selected>rating</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+                <div class="col-6"></div>    
                 </div>
                 <div class="mt-3">
                     <label for="message" class="form-label">Message</label>
@@ -166,7 +168,6 @@ $menu = new Menu();
                             <input type="date" name="date" class="form-control" id="currentDate" min="<?= date('Y-m-d'); ?>">
                         </div>
                     </div>
-
                 </div>
                 <input type="submit" value="POST" name="post" id="post" class="btn btn-block btn-warning text-light mt-3 w-100">
             </form>

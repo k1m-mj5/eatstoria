@@ -6,14 +6,14 @@ $review = new Review();
 
 if(isset($_POST["edit"])){
     $review_id = $_POST["review_id"];
-    $rest_name = $_POST["restname"];
+    $rest_id = $_POST["rest_id"];
     $rating = $_POST["rating"];
-    $menu_title = $_POST["menu"];
+    $menu_id = $_POST["menu"];
     $way = $_POST["way"];
     $message = $_POST["message"];
     $date_posted = $_POST["date_posted"];
     
-    $review ->EditReview($review_id, $rest_name, $rating, $menu_title, $way, $message, $date_posted);
+    $review ->EditReview($review_id, $rest_id, $rating, $menu_id, $way, $message, $date_posted);
 
 }
 

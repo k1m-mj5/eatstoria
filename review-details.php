@@ -4,7 +4,7 @@ include 'class/user.php';
 
 $user = new User($_SESSION["account_id"]);
 
-$account_id = $user->getAccountID();
+// $account_id = $user->getAccountID();
 $username = $user->getUsername();
 
 
@@ -16,6 +16,7 @@ $review = new Review($review_id);
 
 $rest_id = $review->getRestID();
 $rest_name = $review->getRestName();
+$menu_id = $review->getMenuID();
 $menu_title = $review->getMenuTitle();
 $way = $review->getWay();
 $rating = $review->getRating();
@@ -64,11 +65,11 @@ $reviewer_username = $reviewer->getUsername();
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="review-details.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">LOGOUT</a></li>
+                <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="review-top-user.php">Reviews</a></li>
+                    <li class="nav-item"><a class="nav-link" href="restaurant-top-user.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?> </a></li>
+                    <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
         </div>
@@ -97,11 +98,9 @@ $reviewer_username = $reviewer->getUsername();
                     <div class="col-6 mx-auto">
                         <?php
                         if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
-                            //Input
                             $class = ($_SESSION["success"] == 1) ? "success" : "danger";
                             $message = $_SESSION["message"];
 
-                            //Delete session variables
                             unset($_SESSION["success"]);
                             unset($_SESSION["message"]);
                         ?>
@@ -118,11 +117,10 @@ $reviewer_username = $reviewer->getUsername();
                     <div class="col-6 mx-auto">
                         <?php
                         if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
-                            //Input
+                            
                             $class = ($_SESSION["success"] == 1) ? "success" : "danger";
                             $message = $_SESSION["message"];
 
-                            //Delete session variables
                             unset($_SESSION["success"]);
                             unset($_SESSION["message"]);
                         ?>
@@ -137,20 +135,31 @@ $reviewer_username = $reviewer->getUsername();
                 </div>
                 <input type="id" name="review_id" value="<?php echo $review_id; ?>" hidden>
                 <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
-                <div class="card w-75 mx-auto">
+                <div class="card w-50 mx-auto">
                     <div class="card-body">
-                        <h5 class="card-title"><?php echo "$rest_name"; ?></h5>
-                        <a href="restaurant-details-user.php?id=<?php echo $rest_id ?>" class="text-decoration-none">Visit Restaurant Page</a>
+                        <div class="row">
+                            <div class="col-6">
+                        <h5 class="card-title display-6"><?php echo "$rest_name"; ?></h5></div>
+                        <div class="col-6">
+                        <a class="text-decoration-none text-primary" href="restaurant-details-user.php?id=<?php echo $rest_id ?>">Visit Restaurant Page <i class='bi bi-arrow-right'></i></a></div>
+                        </div>
                         <p class="card-text">Menu: <?php echo "$menu_title"; ?></p>
                         <p class="card-text">Way: <?php echo "$way"; ?></p>
-                        <p class="card-text">Rating: <?php echo "$rating"; ?></p>
+                        <p class="card-text"><i class='fas fa-star'></i> Rating: <?php echo "$rating"; ?></p>
                         <p class="card-text"><?php echo "$message"; ?></p>
-                        <p class="card-text"><small class="text-muted"><?php echo "$reviewer_username"; ?> \ <?php echo "$date_posted"; ?></small></p>
+                        <p class="card-text"><small class="text-muted"><?php echo "$date_posted"; ?> by <?php echo "$reviewer_username"; ?></small></p>
                     </div>
-                    <img class="card-img-bottom" src="..." alt="Card image cap">
+                    <img class="card-img-bottom img-fluid" src="https://images.all-free-download.com/images/graphicthumb/food_drink_icons_colored_calssical_sketch_6844405.jpg" alt="Card image cap">
                 </div>
-                <div class="d-flex align-items-end flex-column mt-3 mb-3">
-                    <a href="edit-review.php?id=<?php echo $review_id; ?>" class="btn btn-block btn-outline-info">Edit Review</a>
+                <div class="row mt-5 mb-3">
+                    <div class="col-3"></div>
+                    <div class="col-3">
+                    
+                    </div>
+                    <div class="col-3">
+                    <a href="edit-review.php?id=<?php echo $review_id; ?>" class="btn btn-block btn-outline-info w-100">Edit Review</a>
+                    </div>
+                    <div class="col-3"></div>
                 </div>
             </div>
         </form>

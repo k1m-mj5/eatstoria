@@ -153,7 +153,7 @@ class Menu extends Database{
                 <td>".$row["menu_title"]."</td> 
                 <td>".$row["price"]."</td>
                  <td>".$row["description"]."</td>
-                 <td><a href='#' class='btn btn-block btn-outline-info'>View Picture</a></td>
+                 <td><a href='https://static.vecteezy.com/system/resources/previews/000/463/798/original/healthy-food-illustration-vector.jpg' class='btn btn-block btn-outline-warning'>Picture</a></td>
                  </tr>";
             } 
         } else {

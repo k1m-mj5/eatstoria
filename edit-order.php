@@ -12,7 +12,6 @@ $order_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
 $order = new Order($order_id);
 
 $rest_id = $order->getRestID();
-
 $menu_id = $order->getMenuID();
 $menu_title = $order->getMenuTitle();
 $quantity = $order->getQuantity();

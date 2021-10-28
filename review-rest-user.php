@@ -10,9 +10,10 @@ $username = $user->getUsername();
 include 'class/restaurant.php';
 $rest_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
 $restaurant = new Restaurant($rest_id);
-$rest_name = $restaurant->getRestname();
+$rest_name = $restaurant->getRestname($rest_id);
 
 include 'class/review.php';
+
 $review = new Review();
 
 ?>
@@ -42,13 +43,6 @@ $review = new Review();
     body {
         font-family: 'Roboto', sans-serif;
     }
-    .cards-box {
-        display: flex;
-        justify-content: space-between;
-        margin: 0 70px;
-        margin-top: 65px;
-        flex-wrap: wrap;
-    }
 </style>
 
 <body>
@@ -59,9 +53,9 @@ $review = new Review();
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="review-top-user.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link" href="restaurant-top-user.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="review-top-user.php">Restaurants</a></li>
                     <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?> </a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
@@ -91,7 +85,7 @@ $review = new Review();
                 <div class="col-6 mx-auto">
                     <?php
                     if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
-                        
+
                         $class = ($_SESSION["success"] == 1) ? "success" : "danger";
                         $message = $_SESSION["message"];
 
@@ -107,17 +101,34 @@ $review = new Review();
                     ?>
                 </div>
             </div>
-            <div class="text-center mb-5">
-                <h2 class="fw-bolder">Reviews</h2>
-            </div>
-            <div class="card-colums" id="all_posting">
-            <div id="card-box" class="cards-box">
-                <?php
-                $review->displayReviewOnTop();
-                ?>
+            <form action="" method="POST">
+                <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
+                <div class="row">
+                    <h4 class="display-6 text-center"><?php echo $rest_name; ?> <span class="h4 text-muted">Reviews</span></h4>
                 </div>
-            </div>
+                <div class="mt-3">
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Menu</th>
+                                <th scope="col">Way</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Message</th>
+                                <th scope="col">Username</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $review->displayReviewOnReviewRest($rest_id)
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+
         </div>
+
     </section>
 
     <!-- Footer-->

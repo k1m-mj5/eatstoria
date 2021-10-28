@@ -111,18 +111,20 @@ $menu = new Menu();
             </div>
             <div class="card mx-auto">
                 <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
-                <img class="card-img-bottom" src="..." alt="Card image cap">
+                <img class="card-img-bottom img-fluid" src="https://thumbs.dreamstime.com/t/modern-cafe-interior-empty-no-people-cafeteria-furniture-sketch-doodle-horizontal-vector-illustration-147680028.jpg" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title"><?php echo $rest_name; ?></h5>
-                    <p class="card-text"><?php echo $description; ?></p>
+                    <h5 class="card-title text-center display-5"><?php echo $rest_name; ?></h5>
+                    <p class="card-text text-center"><?php echo $description; ?></p>
                     <div class="row">
-                    <div class="col-4"></div>
-                    <div class="col-4">
-                            <a href="add-review.php?id=<?php echo $rest_id ?>" class="btn btn-info w-100"> Creat Review</a>
+                    <div class="col-3"></div>
+                    <div class="col-3">
+                        <a href="review-rest-user.php?id=<?php echo $rest_id ?>" class="btn btn-success w-100">Reviews</a>
                     </div>
-                    <div class="col-4"></div>
+                    <div class="col-3">
+                        <a href="add-review.php?id=<?php echo $rest_id ?>" class="btn btn-outline-success w-100">Leave a Review</a>
                     </div>
-                    <p>Retaurant Information</p>
+                    </div>
+                    <p class="mt-5">Retaurant Information</p>
                     <ul>
                         <li>Location: <?php echo $location; ?></li>
                         <li>Opening hours: <?php echo $open_hour; ?></li>

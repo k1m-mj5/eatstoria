@@ -1,7 +1,18 @@
 <?php
 
-include 'class/review.php';
+// include 'class/user.php';
 
+// $user = new User($_SESSION["account_id"]);
+
+// $account_id = $user->getAccountID();
+// $username = $user->getUsername();
+
+include 'class/restaurant.php';
+$rest_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
+$restaurant = new Restaurant($rest_id);
+$rest_name = $restaurant->getRestname();
+
+include 'class/review.php';
 $review = new Review();
 
 ?>
@@ -31,6 +42,13 @@ $review = new Review();
     body {
         font-family: 'Roboto', sans-serif;
     }
+    .cards-box {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 70px;
+        margin-top: 65px;
+        flex-wrap: wrap;
+    }
 </style>
 
 <body>
@@ -43,7 +61,7 @@ $review = new Review();
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="review-top.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link"  href="restaurant-top.php">Restaurants</a></li>
                     <li class="nav-item"><a class="nav-link" href="login-user.php">LOGIN</a></li>
                     <li class="nav-item"><a class="nav-link" href="register-user.php">JOIN US</a></li>
                 </ul>
@@ -73,11 +91,10 @@ $review = new Review();
                 <div class="col-6 mx-auto">
                     <?php
                     if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
-                        //Input
+                        
                         $class = ($_SESSION["success"] == 1) ? "success" : "danger";
                         $message = $_SESSION["message"];
 
-                        //Delete session variables
                         unset($_SESSION["success"]);
                         unset($_SESSION["message"]);
                     ?>
@@ -90,13 +107,15 @@ $review = new Review();
                     ?>
                 </div>
             </div>
-            <div class="d-flex align-items-end flex-column mt-3 mb-3">
-                <a href="add-review.php" class="btn btn-block btn-outline-warning">Add Review</a>
+            <div class="text-center mb-5">
+                <h2 class="fw-bolder"><i class="fas fa-hamburger"></i> Reviews</h2>
             </div>
-            <div class="mb-5 mt-5">
+            <div class="card-colums" id="all_posting">
+            <div id="card-box" class="cards-box">
                 <?php
                 $review->displayReviewOnTop();
                 ?>
+                </div>
             </div>
         </div>
     </section>
