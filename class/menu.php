@@ -76,8 +76,7 @@ class Menu extends Database{
                 <td>".$row["menu_title"]."</td> 
                 <td>".$row["price"]."</td>
                  <td>".$row["description"]."</td>
-                 <td><a href='#' class='btn btn-block btn-outline-info'>View Picture</a></td>
-                 <td><a href='#' class='btn btn-block btn-warning'>Order</a></td>
+                 <td><a href='https://static.vecteezy.com/system/resources/previews/000/463/798/original/healthy-food-illustration-vector.jpg' class='btn btn-block btn-outline-warning'>Picture</a></td>
                  </tr>";
             } 
         } else {
@@ -98,7 +97,7 @@ class Menu extends Database{
                  <td>".$row["description"]."</td>
                  <td><p>img</p></td>
                  <td><a href='edit-menu.php?id=".$row["menu_id"]."' class='btn btn-block btn-outline-info'>Update</a></td>
-                 <td><a href='#' class='btn btn-block btn-danger'>DELETE</a></td>
+                 <td><a href='#' class='btn btn-block btn-outline-danger'>DELETE</a></td>
                  </tr>";
             } 
         } else {
@@ -158,6 +157,22 @@ class Menu extends Database{
             } 
         } else {
         echo "No data";
+        }
+    }
+
+    public function displayMenuOnDashboard($menu_id=NULL){
+        $sql = "SELECT * FROM menu
+                INNER JOIN restaurant ON menu.rest_id=restaurant.rest_id";
+        $result = $this->conn->query($sql);
+
+        if($result && $result->num_rows>0){
+            while ($row = $result->fetch_assoc()){
+                echo "<tr>
+                <td>".$row["menu_id"]."</td>
+                <td>".$row["rest_name"]."</td>
+                <td>".$row["menu_title"]."</td>
+                </tr>";
+            }
         }
     }
 }

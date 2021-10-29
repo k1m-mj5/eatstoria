@@ -4,16 +4,29 @@ include 'class/user.php';
 
 $user = new User($_SESSION["account_id"]);
 
-$account_id = $user->getAccountID();
-$username = $user->getUsername();
+// $account_id = $user->getAccountID();
+$rest_username = $user->getRestUsername();
 
-include 'class/restaurant.php';
-$rest_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
-$restaurant = new Restaurant($rest_id);
-$rest_name = $restaurant->getRestname();
 
 include 'class/review.php';
-$review = new Review();
+
+$review_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
+
+$review = new Review($review_id);
+
+$rest_id = $review->getRestID();
+$rest_name = $review->getRestName();
+$menu_id = $review->getMenuID();
+$menu_title = $review->getMenuTitle();
+$way = $review->getWay();
+$rating = $review->getRating();
+$message = $review->getMessage();
+$date_posted = $review->getDatePosted();
+
+$reviewer = new User($review->getAccountID());
+
+$account_id = $reviewer->getAccountID();
+$reviewer_username = $reviewer->getUsername();
 
 ?>
 
@@ -42,13 +55,6 @@ $review = new Review();
     body {
         font-family: 'Roboto', sans-serif;
     }
-    .cards-box {
-        display: flex;
-        justify-content: space-between;
-        margin: 0 70px;
-        margin-top: 65px;
-        flex-wrap: wrap;
-    }
 </style>
 
 <body>
@@ -59,10 +65,10 @@ $review = new Review();
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="review-top-user.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top-user.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?> </a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?> </a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
@@ -86,38 +92,67 @@ $review = new Review();
     </header>
 
     <section class="py-5 border-bottom" id="features">
-        <div class="container px-5 my-5">
-            <div class="row mt-5">
-                <div class="col-6 mx-auto">
-                    <?php
-                    if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
-                        
-                        $class = ($_SESSION["success"] == 1) ? "success" : "danger";
-                        $message = $_SESSION["message"];
+        <form action="" method="POST">
+            <div class="container px-5 my-5">
+                <div class="row mt-5">
+                    <div class="col-6 mx-auto">
+                        <?php
+                        if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                            $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                            $message = $_SESSION["message"];
 
-                        unset($_SESSION["success"]);
-                        unset($_SESSION["message"]);
-                    ?>
+                            unset($_SESSION["success"]);
+                            unset($_SESSION["message"]);
+                        ?>
 
-                        <div class="alert alert-<?php echo $class; ?>" role="alert">
-                            <?php echo $message; ?>
+                            <div class="alert alert-<?php echo $class; ?>" role="alert">
+                                <?php echo $message; ?>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-6 mx-auto">
+                        <?php
+                        if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                            
+                            $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                            $message = $_SESSION["message"];
+
+                            unset($_SESSION["success"]);
+                            unset($_SESSION["message"]);
+                        ?>
+
+                            <div class="alert alert-<?php echo $class; ?>" role="alert">
+                                <?php echo $message; ?>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+                <input type="id" name="review_id" value="<?php echo $review_id; ?>" hidden>
+                <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
+                <div class="card w-50 mx-auto">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                        <h5 class="card-title display-6"><?php echo "$rest_name"; ?></h5></div>
+                        <div class="col-6">
+                        <a class="text-decoration-none text-primary" href="restaurant-details-owner.php?id=<?php echo $rest_id ?>">Visit Restaurant Page <i class='bi bi-arrow-right'></i></a></div>
                         </div>
-                    <?php
-                    }
-                    ?>
+                        <p class="card-text">Menu: <?php echo "$menu_title"; ?></p>
+                        <p class="card-text">Way: <?php echo "$way"; ?></p>
+                        <p class="card-text"><i class='fas fa-star'></i> Rating: <?php echo "$rating"; ?></p>
+                        <p class="card-text"><?php echo "$message"; ?></p>
+                        <p class="card-text"><small class="text-muted"><?php echo "$date_posted"; ?> by <?php echo "$reviewer_username"; ?></small></p>
+                    </div>
+                    <img class="card-img-bottom img-fluid" src="https://images.all-free-download.com/images/graphicthumb/food_drink_icons_colored_calssical_sketch_6844405.jpg" alt="Card image cap">
                 </div>
             </div>
-            <div class="text-center mb-5">
-                <h2 class="fw-bolder"><i class="fas fa-hamburger"></i> Reviews</h2>
-            </div>
-            <div class="card-colums" id="all_posting">
-            <div id="card-box" class="cards-box">
-                <?php
-                $review->displayReviewOnTop();
-                ?>
-                </div>
-            </div>
-        </div>
+        </form>
     </section>
 
     <!-- Footer-->

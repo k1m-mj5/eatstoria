@@ -179,4 +179,46 @@ class Restaurant extends Database{
         }
     }
 
+    public function displayRestOnTopOwner($rest_id=NULL){
+        $sql = "SELECT restaurant.rest_id, restaurant.rest_name, restaurant.description FROM restaurant";
+        $result = $this->conn->query($sql);
+
+        if($result && $result->num_rows>0){
+            while($row = $result->fetch_assoc()){
+                echo "<div class='card w-25 ms-1 mb-3 p-3'>
+                        <div class='card-body'>
+                        <img class='card-img-top img-fluid' src='https://cdn.dribbble.com/users/58386/screenshots/6860641/eat24_restaurants.jpg?compress=1&resize=400x300'>
+                            <h2 class='h4 fw-bolder mt-2'>".$row["rest_name"]."</h2>
+                            <p class='text-muted'>".$row["description"]."</p>
+                            <a class='text-decoration-none' href='restaurant-details-owner.php?id=".$row["rest_id"]."'>
+                            Check Details <i class='bi bi-arrow-right'></i>
+                            </a>
+                        </div>
+                    </div>";
+            }
+        } else {
+            echo "No data";
+        }
+    }
+
+    public function displayRestaurantOnDashboard($rest_id=NULL){
+        $sql = "SELECT * FROM restaurant
+                INNER JOIN accounts ON restaurant.account_id = accounts.account_id";
+        $result = $this->conn->query($sql);
+
+        if($result && $result->num_rows>0){
+            while ($row = $result->fetch_assoc()){
+                echo "<tr>
+                <td>".$row["rest_id"]."</td>
+                <td>".$row["rest_username"]."</td>
+                <td>".$row["rest_name"]."</td>
+                <td>".$row["description"]."</td>
+                <td>".$row["location"]."</td>
+                </tr>";
+            }
+        } else {
+            echo "No data";
+        }
+    }
+
 }

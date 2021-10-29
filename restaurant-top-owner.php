@@ -3,16 +3,15 @@
 include 'class/user.php';
 
 $user = new User($_SESSION["account_id"]);
+
 $account_id = $user->getAccountID();
 $rest_username = $user->getRestUsername();
-$email = $user->getEmail();
 
 include 'class/restaurant.php';
 
 $restaurant = new Restaurant();
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,23 +34,31 @@ $restaurant = new Restaurant();
 </head>
 
 <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .cards-box {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 70px;
+        margin-top: 65px;
+        flex-wrap: wrap;
+    }
 </style>
 
 <body>
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
-            <a class="navbar-brand" href="index-owner.php">EATSTORIA</a>
+            <a class="navbar-brand" href="index-user.php">EATSTORIA</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index-owner.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top-owner.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link" href="restaurant-top-owner.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?></a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-top-owner.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?> </a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
@@ -74,68 +81,21 @@ $restaurant = new Restaurant();
         </div>
     </header>
 
-    <section class="py-5 border-bottom" id="features">
-        <div class="container px-5 my-5 w-75">
-            <div>
-                <?php
-                    if(isset($_SESSION["success"]) && ($_SESSION["message"])){
-                        $class=($_SESSION["success"] == 0) ? "danger" : "success";
-                        $message=($_SESSION["message"]);
-
-                        unset($_SESSION["success"]);
-                        unset($_SESSION["message"]);
-                ?>    
-                    <div class='alert alert-<?php echo $class; ?>' role='alert'>
-                    <?php echo "$message"; ?>
-                    </div>
-                <?php
-                }    
-                ?>
+    <!-- Restaurant preview section-->
+    <section class="bg-light py-5 border-bottom">
+        <div class="container px-5 my-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bolder"><i class="fas fa-utensils"></i> Restaurants</h2>
             </div>
-            <h4 class="mb-3">Edit Owner Account</h4>
-            <form action="action/edit-owner.php" method="POST">
-                <div class="form-group mb-3">
-                    <input type="text" class="form-control" name="restusername" value="<?php echo "$rest_username"; ?>" required="required">
+            <div class="card-colums" id="all_posting">
+                <div id="card-box" class="cards-box">
+                    <?php
+                    $restaurant->displayRestOnTopOwner();
+                    ?>
                 </div>
-                <div class="form-group mb-3">
-                    <input type="email" class="form-control" name="email" value="<?php echo "$email"; ?>" required="required">
-                </div>
-                <div class="form-group mb-3">
-                    <input type="password" class="form-control" name="password" placeholder="Password">
-                </div>
-                <div class="form-group mb-3">
-                    <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm Password">
-                </div>
-                <input type="submit" value="EDIT" name="edit" id="edit" class="btn btn-block btn-success text-light mt-3 mb-3 w-100">
-                <div class="form-group mb-3">
-                <a href="add-restaurant.php" class="btn btn-block btn-warning mt-3">Add Restaurant</a>
-                    <table class="table table-striped mt-3">
-                        <thead>
-                            <tr>
-                                <th scope="col">Restaurant ID</th>
-                                <th scope="col">Restaurant Name</th>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                            <?php
-                            if($_SESSION["role"]=="R"){
-                                $restaurant->displayRestListOnEdit($_SESSION["account_id"]);
-                            } else {
-                                header ("Location:../index.php");
-                            }
-                          ?>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </form>
+            </div>
         </div>
-
     </section>
-
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container px-5">

@@ -6,7 +6,6 @@ $user = new User($_SESSION["account_id"]);
 
 $account_id = $user->getAccountID();
 $rest_username = $user->getRestUsername();
-$email = $user->getEmail();
 
 ?>
 
@@ -41,13 +40,13 @@ $email = $user->getEmail();
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
-            <a class="navbar-brand" href="#!">EATSTORIA</a>
+            <a class="navbar-brand" href="index-owner.php">EATSTORIA</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="index-owner.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="review-top-owner.php">Reviews</a></li>
+                    <li class="nav-item"><a class="nav-link" href="restaurant-top-owner.php">Restaurants</a></li>
                     <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
@@ -57,6 +56,26 @@ $email = $user->getEmail();
     <!-- Header-->
     <header class="bg-warning py-5">
         <div class="container px-5">
+        <div class="row mt-5">
+            <div class="col-6 mx-auto">
+                <?php
+                if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
+                    
+                    $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                    $message = $_SESSION["message"];
+
+                    unset($_SESSION["success"]);
+                    unset($_SESSION["message"]);
+                ?>
+
+                    <div class="alert alert-<?php echo $class; ?>" role="alert">
+                        <?php echo $message; ?>
+                    </div>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-6">
                     <div class="text-center my-5">
@@ -74,165 +93,21 @@ $email = $user->getEmail();
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5">
             <div class="text-center mb-5">
-                <h2 class="fw-bolder">Recent Reviews</h2>
-                <a href="review-top.php" class="text-decoration-none text-info">
-                    <p class="lead mb-0">See other reviews</p>
-                </a>
-            </div>
-            <div class="row gx-5">
-                <div class="col-lg-4 mb-5 mb-lg-0">
-                    <h2 class="h4 fw-bolder">Restaurant Name</h2>
-                    <p>Stars</p>
-                    <a class="text-decoration-none" href="#!">
-                        Read more
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
-                <div class="col-lg-4 mb-5 mb-lg-0">
-                    <h2 class="h4 fw-bolder">Restaurant Name</h2>
-                    <p>Stars</p>
-                    <a class="text-decoration-none" href="#!">
-                        Read more
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
-                <div class="col-lg-4">
-                    <h2 class="h4 fw-bolder">Restaurant Name</h2>
-                    <p>Stars</p>
-                    <a class="text-decoration-none" href="#!">
-                        Read more
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
+                <h2 class="fw-bolder"><i class="fas fa-hamburger"></i> Recent Reviews</h2>
+                <a href="review-top-owner.php" class="text-decoration-none text-info"><p class="lead mb-0">Check other reviews</p></a>
             </div>
         </div>
-
+        
     </section>
     <!-- Restaurant preview section-->
     <section class="bg-light py-5 border-bottom">
         <div class="container px-5 my-5">
-            <div class="row mt-5">
-                <div class="col-6 mx-auto">
-                    <?php
-                    if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
-                        //Input
-                        $class = ($_SESSION["success"] == 1) ? "success" : "danger";
-                        $message = $_SESSION["message"];
-
-                        //Delete session variables
-                        unset($_SESSION["success"]);
-                        unset($_SESSION["message"]);
-                    ?>
-
-                        <div class="alert alert-<?php echo $class; ?>" role="alert">
-                            <?php echo $message; ?>
-                        </div>
-                    <?php
-                    }
-                    ?>
-                </div>
-            </div>
             <div class="text-center mb-5">
-                <h2 class="fw-bolder">Recommendation Restaurants</h2>
+                <h2 class="fw-bolder"><i class="fas fa-utensils"></i> Recommendation Restaurants</h2>
                 <p class="lead mb-0">Adorable restaurants near you</p>
             </div>
             <div class="row mb-5">
-                <a class="text-decoration-none text-center text-info" href="restaurant-top.php">Find more Restaurants</a>
-            </div>
-            <div class="row gx-5 justify-content-center">
-
-                <div class="col-lg-6 col-xl-4">
-                    <div class="card mb-5 mb-xl-0">
-                        <div class="card-body p-5">
-                            <div class="small text-uppercase fw-bold text-muted">KOREAN</div>
-                            <div class="mb-3">
-                                <span class="display-6 fw-bold">Seoul Soul</span>
-                                <img src="https://toppng.com/uploads/preview/square-115527604300vrdl6wlrv.png" width="200" height="150" alt="">
-                            </div>
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-2">
-                                    <i class="fas fa-utensils"></i>
-                                    <strong>Samgyeopsal</strong>
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Eat in
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Take Out
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Delivery
-                                </li>
-                            </ul>
-                            <div class="d-grid"><a class="btn btn-outline-primary" href="#!">More Information</a></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 col-xl-4">
-                    <div class="card mb-5 mb-xl-0">
-                        <div class="card-body p-5">
-                            <div class="small text-uppercase fw-bold text-muted">JAPANESE</div>
-                            <div class="mb-3">
-                                <span class="display-6 fw-bold">Asuka</span>
-                                <img src="https://toppng.com/uploads/preview/square-115527604300vrdl6wlrv.png" width="200" height="150" alt="">
-                            </div>
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-2">
-                                    <i class="fas fa-utensils"></i>
-                                    <strong>Sushi</strong>
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Eat in
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Take Out
-                                </li>
-                                <li class="text-muted">
-                                    <i class="bi bi-x"></i>
-                                    Delivery
-                                </li>
-                            </ul>
-                            <div class="d-grid"><a class="btn btn-outline-primary" href="#!">More Information</a></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 col-xl-4">
-                    <div class="card mb-5 mb-xl-0">
-                        <div class="card-body p-5">
-                            <div class="small text-uppercase fw-bold text-muted">WESTERN</div>
-                            <div class="mb-3">
-                                <span class="display-6 fw-bold">Mr. Steakhouse</span>
-                                <img src="https://toppng.com/uploads/preview/square-115527604300vrdl6wlrv.png" width="200" height="150" alt="">
-                            </div>
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-2">
-                                    <i class="fas fa-utensils"></i>
-                                    <strong>T-bone steak</strong>
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Eat in
-                                </li>
-                                <li class="text-muted mb-2">
-                                    <i class="bi bi-x"></i>
-                                    Take Out
-                                </li>
-                                <li class="text-muted">
-                                    <i class="bi bi-x"></i>
-                                    Delivery
-                                </li>
-                            </ul>
-                            <div class="d-grid"><a class="btn btn-outline-primary" href="#!">More Information</a></div>
-                        </div>
-                    </div>
-                </div>
+                <a class="text-decoration-none text-center text-info" href="restaurant-top-user.php">Find more Restaurants</a>
             </div>
         </div>
     </section>

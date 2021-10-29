@@ -11,10 +11,13 @@ $email = $user->getEmail();
 include 'class/order.php';
 $order = new Order();
 
-$order_id = $order->getOrderID();
-$rest_id = $order->getRestID();
-$menu_id = $order->getMenuID();
-$order_date = $order->getOrderdate();
+// $order_id = $order->getOrderID();
+// $rest_id = $order->getRestID();
+// $menu_id = $order->getMenuID();
+// $order_date = $order->getOrderdate();
+
+include 'class/review.php';
+$review = new Review();
 
 ?>
 <!DOCTYPE html>
@@ -48,7 +51,7 @@ $order_date = $order->getOrderdate();
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
-            <a class="navbar-brand" href="#!">EATSTORIA</a>
+            <a class="navbar-brand" href="index-user.php">EATSTORIA</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -111,7 +114,6 @@ $order_date = $order->getOrderdate();
                 <div class="form-group mb-3">
                     <?php echo "$email"; ?>
                 </div>
-
                 <div>
                     <h4 class="mt-5 mb-3">My Order</h4>
                     <table class="table table-striped text-center mt-3">
@@ -127,6 +129,25 @@ $order_date = $order->getOrderdate();
                         <tbody>
                             <?php
                                 $order->displayOrderOnMyUser($account_id);
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h4 class="mt-5 mb-3">My Review</h4>
+                    <table class="table table-striped text-center mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Restaurant</th>
+                                <th scope="col">Menu</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $review->displayReviewOnMyUser($account_id);
                             ?>
                         </tbody>
                     </table>

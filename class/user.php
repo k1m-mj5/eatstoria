@@ -33,6 +33,26 @@ class User extends Database{
         }
     }
 
+    public function getAccountID(){
+        return $this->account_id;
+    }
+
+    public function getUsername(){
+        return $this->username;
+    }
+
+    public function getRestUsername(){
+        return $this->rest_username;
+    }
+
+    public function getEmail(){
+        return $this->email;
+    }
+
+    public function getPassward(){
+        return $this->password;
+    }
+
     public function registeruser($username,$email,$password){
         $hashed_password = password_hash($password,PASSWORD_DEFAULT);
         $sql = "INSERT INTO accounts(username,password) VALUES ('$username','$hashed_password')";
@@ -103,7 +123,7 @@ class User extends Database{
                 $_SESSION["role"] = $user["role"];
                 
                 if($user["role"]=="A"){
-                    header("Location: ../index.php");
+                    header("Location: ../dashboard.php");
                     exit;
                 } elseif($user["role"]=="U"){
                     header("Location: ../mypage-user.php");
@@ -219,25 +239,30 @@ class User extends Database{
 
         }
     
-    public function getAccountID(){
-        return $this->account_id;
+    public function displayUsersOnDashboard($account_id=NULL){
+        $sql = "SELECT * FROM accounts
+                INNER JOIN users ON accounts.account_id = users.account_id";
+        $result = $this->conn->query($sql);
+
+        if($result && $result->num_rows>0) {
+            while ($row = $result->fetch_assoc()){
+                echo "<tr>
+                <td>".$row["account_id"]."</td>
+                <td>".$row["username"]."</td>
+                <td>".$row["rest_username"]."</td>
+                <td>".$row["email"]."</td>
+                </tr>";
+            }
+        } else {
+            echo "<tr>
+            <td>No data</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            </tr>";
+        }
     }
 
-    public function getUsername(){
-        return $this->username;
-    }
-
-    public function getRestUsername(){
-        return $this->rest_username;
-    }
-
-    public function getEmail(){
-        return $this->email;
-    }
-
-    public function getPassward(){
-        return $this->password;
-    }
 
 }
 

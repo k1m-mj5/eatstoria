@@ -51,7 +51,7 @@ $restaurant = new Restaurant();
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
-            <a class="navbar-brand" href="#!">EATSTORIA</a>
+            <a class="navbar-brand" href="index-user.php">EATSTORIA</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -85,7 +85,7 @@ $restaurant = new Restaurant();
     <section class="bg-light py-5 border-bottom">
         <div class="container px-5 my-5">
             <div class="text-center mb-5">
-                <h2 class="fw-bolder">Restaurants</h2>
+                <h2 class="fw-bolder"><i class="fas fa-utensils"></i> Restaurants</h2>
             </div>
             <div class="card-colums" id="all_posting">
                 <div id="card-box" class="cards-box">

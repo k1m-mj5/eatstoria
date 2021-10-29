@@ -6,7 +6,6 @@ $user = new User($_SESSION["account_id"]);
 
 $account_id = $user->getAccountID();
 $rest_username = $user->getRestUsername();
-$email = $user->getEmail();
 
 include 'class/restaurant.php';
 
@@ -58,13 +57,13 @@ $menu = new Menu();
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
-            <a class="navbar-brand" href="#!">EATSTORIA</a>
+            <a class="navbar-brand" href="index-owner.php">EATSTORIA</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="index-owner.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-details.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="review-top-owner.php">Reviews</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-top-owner.php">Restaurants</a></li>
                     <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
@@ -113,12 +112,16 @@ $menu = new Menu();
             <div class="container px-5 my-5">
                 <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
                 <div class="card mx-auto">
-                    <img class="card-img-bottom" src="..." alt="Card image cap">
+                <img class="card-img-bottom img-fluid" src="https://thumbs.dreamstime.com/t/modern-cafe-interior-empty-no-people-cafeteria-furniture-sketch-doodle-horizontal-vector-illustration-147680028.jpg" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title"><?php echo $rest_name; ?></h5>
-                        <p class="card-text"><?php echo $description; ?></p>
-                        <a href="#">Reviews</a>
-                        <p>Retaurant Information</p>
+                        <h5 class="card-title text-center display-5"><?php echo $rest_name; ?></h5>
+                        <p class="card-text text-center"><?php echo $description; ?></p>
+                        <div class="row">
+                            <div class="col-4"></div>
+                            <div class="col-4"><a href="review-rest-owner.php?id=<?php echo $rest_id ?>" class="btn btn-success w-100">Reviews</a></div>
+                        <div class="col-4"></div>
+                        </div>
+                        <p class="mt-5"><i class="fas fa-info-circle"></i> Restaurant Information</p>
                         <ul>
                             <li>Location: <?php echo $location; ?></li>
                             <li>Opening hours: <?php echo $open_hour; ?></li>
@@ -128,11 +131,9 @@ $menu = new Menu();
                             <thead>
                                 <tr>
                                     <th scope="col">Menu</th>
-                                    <th scope="col">Price</th>
+                                    <th scope="col">Price(USD)</th>
                                     <th scope="col">Description</th>
                                     <th scope="col"></th>
-                                    <th scope="col"></th>
-                                </tr>
                                 </tr>
                             </thead>
                             <tbody>

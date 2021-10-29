@@ -5,23 +5,16 @@ include 'class/user.php';
 $user = new User($_SESSION["account_id"]);
 
 $account_id = $user->getAccountID();
-$username = $user->getUsername();
+$rest_username = $user->getRestUsername();
 
 include 'class/restaurant.php';
-
 $rest_id = isset($_GET["id"]) ? $_GET["id"] : NULL;
-
 $restaurant = new Restaurant($rest_id);
-$rest_id = $restaurant->getRestID();
-$rest_name = $restaurant->getRestname();
-$description = $restaurant->getDescription();
-$location = $restaurant->getLocation();
-$telephone = $restaurant->getTelephone();
-$open_hour = $restaurant->getOpenhour();
+$rest_name = $restaurant->getRestname($rest_id);
 
-include 'class/menu.php';
+include 'class/review.php';
 
-$menu = new Menu();
+$review = new Review();
 
 ?>
 
@@ -60,10 +53,10 @@ $menu = new Menu();
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index-user.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="review-top-user.php">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="restaurant-top-user.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mypage-user.php"><?php echo "$username"; ?></a></li>
+                <li class="nav-item"><a class="nav-link" href="index-owner.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="review-top-owner.php">Reviews</a></li>
+                    <li class="nav-item"><a class="nav-link" href="review-top-owner.php">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mypage-restaurant.php"><?php echo "$rest_username"; ?> </a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
@@ -92,11 +85,10 @@ $menu = new Menu();
                 <div class="col-6 mx-auto">
                     <?php
                     if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
-                        //Input
+
                         $class = ($_SESSION["success"] == 1) ? "success" : "danger";
                         $message = $_SESSION["message"];
 
-                        //Delete session variables
                         unset($_SESSION["success"]);
                         unset($_SESSION["message"]);
                     ?>
@@ -109,51 +101,32 @@ $menu = new Menu();
                     ?>
                 </div>
             </div>
-            <div class="card mx-auto">
+            <form action="" method="POST">
                 <input type="id" name="rest_id" value="<?php echo $rest_id; ?>" hidden>
-                <img class="card-img-bottom img-fluid" src="https://thumbs.dreamstime.com/t/modern-cafe-interior-empty-no-people-cafeteria-furniture-sketch-doodle-horizontal-vector-illustration-147680028.jpg" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title text-center display-5"><?php echo $rest_name; ?></h5>
-                    <p class="card-text text-center"><?php echo $description; ?></p>
-                    <div class="row">
-                    <div class="col-3"></div>
-                    <div class="col-3">
-                        <a href="review-rest-user.php?id=<?php echo $rest_id ?>" class="btn btn-success w-100">Reviews</a>
-                    </div>
-                    <div class="col-3">
-                        <a href="add-review.php?id=<?php echo $rest_id ?>" class="btn btn-outline-success w-100">Leave a Review</a>
-                    </div>
-                    </div>
-                    <p class="mt-5"><i class="fas fa-info-circle"></i> Restaurant Information</p>
-                    <ul>
-                        <li>Location: <?php echo $location; ?></li>
-                        <li>Opening hours: <?php echo $open_hour; ?></li>
-                        <li>Telephone: <?php echo $telephone; ?></li>
-                    </ul>
-                    <div class="row">
-                        <div class="col-9"></div>
-                        <div class="col-3">
-                            <a href="add-order.php?id=<?php echo $rest_id ?>" class="btn btn-warning w-100"> ORDER</a>
-                        </div>
-                    </div>
+                <div class="row">
+                    <h4 class="display-6 text-center"><?php echo $rest_name; ?> <span class="h4 text-muted">Reviews</span></h4>
+                </div>
+                <div class="mt-3">
                     <table class="table table-striped mt-3">
                         <thead>
                             <tr>
+                                <th scope="col">Date</th>
                                 <th scope="col">Menu</th>
-                                <th scope="col">Price(USD)</th>
-                                <th scope="col">Description</th>
-                                <th scope="col"></th>
-                            </tr>
+                                <th scope="col">Way</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Message</th>
+                                <th scope="col">Username</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                                $menu->displayMenuOnDetailsUser($rest_id);
+                            $review->displayReviewOnReviewRest($rest_id)
                             ?>
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </form>
+
         </div>
 
     </section>

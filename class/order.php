@@ -121,7 +121,7 @@ class Order extends Database{
                 <td>".$row["order_date"]."</td>
                 <td>".$row["rest_name"]."</td>
                 <td>".$row["menu_title"]."</td>
-                <td><a href='edit-order.php?id=".$row["order_id"]."' class='btn btn-block btn-warning text-light'>Check or Edit details</a></td>
+                <td><a href='edit-order.php?id=".$row["order_id"]."' class='btn btn-block btn-warning text-light'>Check & Edit details</a></td>
                  </tr>";
             }
         } else {
@@ -189,6 +189,29 @@ class Order extends Database{
         }
     }
 
+    public function displayOrderOnDashboard($order_id=NULL){
+        $sql = "SELECT * FROM orders
+                INNER JOIN accounts ON orders.account_id = accounts.account_id
+                INNER JOIN restaurant ON orders.rest_id = restaurant.rest_id
+                INNER JOIN menu ON orders.menu_id = menu.menu_id";
+        $result = $this->conn->query($sql);
+
+        if($result && $result->num_rows>0){
+            while ($row = $result->fetch_assoc()){
+                echo "<tr>
+                <td>".$row["order_id"]."</td>
+                <td>".$row["order_date"]."</td>
+                <td>".$row["username"]."</td>
+                <td>".$row["rest_name"]."</td>
+                <td>".$row["menu_title"]."</td>
+                <td>".$row["quantity"]."</td>
+                <td>".$row["way"]."</td>
+                </tr>";
+            }
+        } else {
+            echo "No Data";
+        }
+    }
 }
 
 ?>

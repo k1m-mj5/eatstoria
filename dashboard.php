@@ -33,15 +33,15 @@ session_start();
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
-            <a class="navbar-brand" href="#!">EATSTORIA</a>
+            <a class="navbar-brand" href="index.php">EATSTORIA</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login-user.php">LOGIN</a></li>
-                    <li class="nav-item"><a class="nav-link" href="register-user.php">JOIN US</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="dashboard.php">Admin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
         </div>
@@ -87,29 +87,36 @@ session_start();
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5">
             <div class="row">
-                <div class="col-4">
+                <div class="col-3">
                     <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
                         <div class="card-body">
-                            <h5 class="text-center">Users</h5>
+                            <h5 class="text-center"><a href="dashboard-users.php" class="text-decoration-none text-light">Users</a></h5>
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
-                <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+                <div class="col-3">
+                    <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
                         <div class="card-body">
-                            <h5 class="text-center">Reviews</h5>
+                            <h5 class="text-center"><a href="dashboard-reviews.php" class="text-decoration-none text-light">Reviews</a></h5>
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
-                <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                <div class="col-3">
+                    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
                         <div class="card-body">
-                            <h5 class="text-center">Restaurants</h5>
+                            <h5 class="text-center"><a href="dashboard-restaurants.php" class="text-decoration-none text-light">Restaurants</a></h5>
                         </div>
                     </div>
                 </div>
+                <div class="col-3">
+                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="text-center"><a href="dashboard-orders.php" class="text-decoration-none text-light">Orders</a></h5>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
     <!-- Footer-->

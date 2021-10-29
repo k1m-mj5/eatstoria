@@ -61,7 +61,7 @@ $reviewer_username = $reviewer->getUsername();
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
-            <a class="navbar-brand" href="#!">EATSTORIA</a>
+            <a class="navbar-brand" href="index-user.php">EATSTORIA</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -154,7 +154,6 @@ $reviewer_username = $reviewer->getUsername();
                 <div class="row mt-5 mb-3">
                     <div class="col-3"></div>
                     <div class="col-3">
-                    
                     </div>
                     <div class="col-3">
                     <a href="edit-review.php?id=<?php echo $review_id; ?>" class="btn btn-block btn-outline-info w-100">Edit Review</a>
