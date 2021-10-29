@@ -142,7 +142,7 @@ $open_hour = $restaurant->getOpenhour();
                         <input type="submit" value="EDIT" name="edit" id="edit" class="btn btn-block btn-info text-light mt-3 w-100">
                     </div>
                     <div class="col-2">
-                        <input type="submit" value="DELETE" name="delete" id="delete" class="btn btn-block btn-outline-danger text-light mt-3 w-50">
+                        <input type="submit" value="DELETE" name="delete" id="delete" class="btn btn-block btn-outline-danger mt-3 w-50">
                     </div>
                 </div>
             </form>

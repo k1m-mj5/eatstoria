@@ -241,29 +241,56 @@ class User extends Database{
     
     public function displayUsersOnDashboard($account_id=NULL){
         $sql = "SELECT * FROM accounts
-                INNER JOIN users ON accounts.account_id = users.account_id";
+                INNER JOIN users ON accounts.account_id = users.account_id
+                WHERE accounts.role = 'U' ";
+        
         $result = $this->conn->query($sql);
-
+        
         if($result && $result->num_rows>0) {
+            
             while ($row = $result->fetch_assoc()){
                 echo "<tr>
                 <td>".$row["account_id"]."</td>
                 <td>".$row["username"]."</td>
-                <td>".$row["rest_username"]."</td>
                 <td>".$row["email"]."</td>
                 </tr>";
             }
+        
         } else {
             echo "<tr>
             <td>No data</td>
-            <td></td>
             <td></td>
             <td></td>
             </tr>";
         }
     }
 
-
+    public function displayOwnersOnDashboard($account_id=NULL){
+        $sql = "SELECT * FROM accounts
+                INNER JOIN users ON accounts.account_id = users.account_id
+                WHERE accounts.role = 'R' ";
+        
+        $result = $this->conn->query($sql);
+        
+        if($result && $result->num_rows>0) {
+            
+            while ($row = $result->fetch_assoc()){
+                echo "<tr>
+                <td>".$row["account_id"]."</td>
+                <td>".$row["rest_username"]."</td>
+                <td>".$row["email"]."</td>
+                </tr>";
+            }
+        
+        } else {
+            echo "<tr>
+            <td>No data</td>
+            <td></td>
+            <td></td>
+            </tr>";
+        }
+    }
 }
+
 
 ?>

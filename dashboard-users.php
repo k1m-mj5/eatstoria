@@ -33,9 +33,9 @@ $email = $user->getEmail();
 </head>
 
 <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 </style>
 
 <body>
@@ -43,12 +43,10 @@ $email = $user->getEmail();
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="index.php">EATSTORIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="review-top.php">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link" href="restaurant-top.php">Restaurants</a></li>
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="dashboard.php">Admin</a></li>
@@ -60,26 +58,26 @@ $email = $user->getEmail();
     <!-- Header-->
     <header class="bg-warning py-5">
         <div class="container px-5">
-        <div class="row mt-5">
-            <div class="col-6 mx-auto">
-                <?php
-                if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
-                    
-                    $class = ($_SESSION["success"] == 1) ? "success" : "danger";
-                    $message = $_SESSION["message"];
+            <div class="row mt-5">
+                <div class="col-6 mx-auto">
+                    <?php
+                    if (isset($_SESSION["success"]) && isset($_SESSION["message"])) {
 
-                    unset($_SESSION["success"]);
-                    unset($_SESSION["message"]);
-                ?>
+                        $class = ($_SESSION["success"] == 1) ? "success" : "danger";
+                        $message = $_SESSION["message"];
 
-                    <div class="alert alert-<?php echo $class; ?>" role="alert">
-                        <?php echo $message; ?>
-                    </div>
-                <?php
-                }
-                ?>
+                        unset($_SESSION["success"]);
+                        unset($_SESSION["message"]);
+                    ?>
+
+                        <div class="alert alert-<?php echo $class; ?>" role="alert">
+                            <?php echo $message; ?>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                </div>
             </div>
-        </div>
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-6">
                     <div class="text-center my-5">
@@ -93,36 +91,50 @@ $email = $user->getEmail();
             </div>
         </div>
     </header>
-    
+
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5">
             <div class="text-center mb-5">
                 <h2 class="fw-bolder">Users</h2>
                 <form action="" method="POST">
-                    
-                <div class="mt-3">
-                    <table class="table table-striped mt-3">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">Owner Username</th>
-                                <th scope="col">Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $user->displayUsersOnDashboard($account_id);
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-                
-                
-            </form>    
+                    <div class="row">
+                        <div class="col-6 mt-3">
+                            <table class="table table-striped mt-3">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $user->displayUsersOnDashboard($account_id);
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-6 mt-3">
+                            <table class="table table-striped mt-3">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Rest Username</th>
+                                        <th scope="col">Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $user->displayOwnersOnDashboard($account_id);
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-        
+
     </section>
 
     <!-- Footer-->

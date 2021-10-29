@@ -57,7 +57,7 @@ class Review extends Database{
     }
 
     public function getMenuID(){
-
+        return $this->menu_id;
     }
 
     public function getMenuTitle(){
