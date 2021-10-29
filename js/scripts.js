@@ -1,3 +1,4 @@
+// scripts
 /*!
 * Start Bootstrap - Business Frontpage v5.0.6 (https://startbootstrap.com/template/business-frontpage)
 * Copyright 2013-2021 Start Bootstrap
