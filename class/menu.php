@@ -192,5 +192,7 @@ class Menu extends Database{
             exit;
         }
     }
+
+    
 }
 ?>

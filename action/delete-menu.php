@@ -9,5 +9,5 @@ $menu = new Menu();
 
 $menu->delete_menu($menu_id,$rest_id);
 
-
+//delete menu
 ?>
