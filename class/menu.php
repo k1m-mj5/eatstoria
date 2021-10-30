@@ -97,8 +97,8 @@ class Menu extends Database{
                  <td>".$row["description"]."</td>
                  <td><p>img</p></td>
                  <td><a href='edit-menu.php?id=".$row["menu_id"]."' class='btn btn-block btn-outline-info'>Update</a></td>
-                 <td><a href='../action/delete-menu.php?id=".$row["menu_id"]."' class='btn btn-block btn-outline-danger'>DELETE</a></td>
-                 </tr>";
+                 <td><a href='action/delete-menu.php?menu_id=".$row["menu_id"]."&rest_id=$rest_id' class='btn btn-block btn-outline-danger'>DELETE</a></td>
+                </tr>";
             } 
         } else {
         echo "No data";
@@ -179,10 +179,15 @@ class Menu extends Database{
     public function delete_menu($menu_id,$rest_id){
         $sql = "DELETE FROM menu WHERE menu_id = $menu_id";
         $result = $this->conn->query($sql);
+        
         if($result == TRUE){
+            $_SESSION["success"] = 1;
+            $_SESSION["message"] = "Menu deleted.";
             header("Location:../restaurant-details-owner.php?id=$rest_id");
             exit;
         } else {
+            $_SESSION["success"] = 0;
+            $_SESSION["message"] = "Failded. Please kinldy check again.";
             header("Location:../add-menu.php?id=$rest_id");
             exit;
         }
